@@ -8,3 +8,105 @@
 @media(max-width:800px){.site-header{padding:17px 22px 0;flex-wrap:wrap;gap:15px}.brand-word{font-size:22px}.brand-word small{font-size:12px;letter-spacing:0}.brand-icon{width:38px;height:38px}.organizer{font-size:12px;padding:8px}.organizer svg{width:13px}nav{order:3;width:100%;gap:28px;margin-top:0}nav a{padding:12px 0 16px;font-size:14px}.main{padding:25px 18px 37px}.expedition-cover{margin-bottom:23px;border-radius:10px;min-height:0}.cover-content{padding:33px 25px 29px}.cover-content h1{font-size:48px}.cover-content .eyebrow{font-size:12px;letter-spacing:1.7px}.cover-caption{font-size:13px;max-width:240px}.cover-location{right:20px;top:24px;font-size:12px}.cover-location small{font-size:12px}.cover-coordinate{display:none}.cover-photo{object-position:55% center}.stats{grid-template-columns:1fr 1fr}.stats>div{padding:17px 18px;gap:9px}.stats .leader-stat{grid-column:1/-1;border-top:1px solid #ffffff19;padding:14px 18px}.stat-label{font-size:12px;letter-spacing:1px}.stats strong{font-size:24px}.stats small{font-size:13px}.leader-stat strong{font-size:18px}.stats .leader-stat>div{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.stats .leader-stat .stat-label{margin:0;max-width:120px;line-height:1.5}.board-heading{padding:23px 20px;align-items:flex-start;gap:12px;flex-wrap:wrap}.board-title{gap:11px}.board-title h2{font-size:22px}.section-index{font-size:12px}.board-heading p{font-size:12px}.refresh{font-size:12px;margin-left:34px;padding:0}.rank{width:61px}.team-icon{width:36px;height:36px}.team{gap:11px}.team strong{font-size:15px}.team div>span{font-size:12px}.points{width:90px;padding-right:21px!important}.points strong{font-size:22px}.progress-head,.progress-cell{display:none}.board td{height:75px}.board th{font-size:12px;letter-spacing:1px}.board-footer{padding:17px 21px;flex-direction:column;font-size:12px;gap:8px}footer{margin:0 20px;font-size:12px;flex-wrap:wrap;gap:12px}.footer-brand{font-size:12px}.admin-row{padding:14px 17px;gap:9px}.admin-row input{width:80px}.save-button{padding:11px 13px;font-size:13px}.admin-panel .refresh{margin-left:0}}
 @media(max-width:450px){.cover-location{display:none}.cover-content{padding:30px 23px}.cover-content h1{font-size:44px}.organizer span{display:none}.organizer{padding:10px}.organizer svg{width:16px;height:16px}.cover-shade{background:linear-gradient(90deg,#061f35df,#061f3540),linear-gradient(0deg,#061f35c0,transparent)}.stats>div{padding:15px 12px}.stat-symbol{width:25px}.stats .leader-stat{padding:14px 12px}.team strong{font-size:14px}.team-icon{width:31px;height:35px}.team-icon svg{width:19px}.rank{width:49px}.points{width:72px;padding-right:17px!important}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* STADA brand system: blue #005db9, ruby #d50058, Noto Sans. */
+:root{--background:#f5f8fc;--foreground:#18344e;--primary:#005db9;--ring:#005db9;--accent:#e9f2fc;--accent-foreground:#005db9;--border:#dce6f0}
+body{font-family:'Noto Sans Variable','Noto Sans',Arial,sans-serif}
+@theme inline{--font-sans:'Noto Sans Variable','Noto Sans',Arial,sans-serif}
+.site-header{min-height:108px;gap:24px;padding-inline:max(28px,calc((100vw - 1200px)/2));border-top:4px solid #005db9;box-shadow:0 3px 20px #00336605}
+.brand{gap:18px}.brand-logo{display:flex;align-items:center;justify-content:center;background:#005db9;width:126px;height:88px;padding:8px 10px;border-radius:0 0 12px 12px;align-self:flex-start}
+.brand-logo img{display:block;width:100%;height:auto;object-fit:contain}
+.brand-caption{color:#005db9;font-size:14px;font-weight:650;line-height:1.6;max-width:178px}
+.brand-caption small{display:block;font-size:12px;font-weight:450;color:#64768a}
+nav a{color:#5b6c7e;font-weight:500;font-size:14px;border:0;transition:color .2s}
+nav a:after{content:'';position:absolute;height:3px;bottom:0;left:0;right:0;background:#d50058;transform:scaleX(0);transform-origin:left;transition:transform .25s}
+nav a:hover,nav a[aria-current]{color:#005db9}
+nav a[aria-current]:after,nav a:hover:after{transform:scaleX(1)}
+.organizer{min-height:44px;font-size:14px;color:#005db9;border-color:#c9daec;border-radius:8px;padding:10px 14px;transition:background .2s,transform .2s}
+.organizer:hover{background:#edf5ff;transform:translateY(-2px)}
+.main{max-width:1264px;padding:36px 32px 56px}
+.expedition-cover{border-radius:16px;margin-bottom:32px;box-shadow:0 12px 38px #00376f12;animation:surface-in .6s ease both}
+.cover-content{padding:42px 40px 36px}
+.cover-content .eyebrow{color:#e0efff;font-size:13px;letter-spacing:2px}
+.edition-line{height:3px;width:28px;background:#d50058}
+.cover-content h1{font-family:'Noto Sans Variable',Arial,sans-serif;font-size:clamp(48px,5vw,66px);line-height:1.04;letter-spacing:-2px;font-weight:850}
+.cover-content h1 span{color:#b7e5ff}
+.cover-caption{font-size:16px;line-height:1.6;color:#eef6ff}
+.cover-shade{background:linear-gradient(90deg,#002f66ed,#00468766 65%,#00468724),linear-gradient(0deg,#002f66e0,transparent 75%)}
+.cover-photo{animation:photo-settle 1.2s cubic-bezier(.2,.6,.3,1) both}
+.cover-location{top:42px;right:36px}.cover-coordinate{bottom:138px;right:36px}
+.stats{background:#004886d9;border-top:1px solid #ffffff30;grid-template-columns:.8fr 1fr 1.3fr}
+.stats>div{padding:23px 28px;gap:16px}
+.stat-label{color:#d0e4fa;font-size:12px;letter-spacing:1.1px}
+.stats strong{font-size:29px;font-weight:700;color:#fff}
+.stats small{font-size:14px;color:#e1ecfa}
+.stat-symbol,.leader-stat .stat-symbol{color:#a6dafa}
+.leader-stat strong{font-size:23px}
+.board{border-color:#dce6f0;box-shadow:0 8px 30px #00376f05;animation:surface-in .6s .12s ease both}
+.board-heading{padding:28px 30px}
+h2{font-weight:650;font-size:25px;letter-spacing:-.7px;color:#005db9}
+.section-index{color:#d50058;font-size:13px}
+.board-heading p{font-size:14px;color:#64768a;line-height:1.6;margin-top:5px}
+.refresh{font-size:13px;padding:11px 14px;border:1px solid #dce6f0;border-radius:8px;min-height:44px;white-space:nowrap;transition:background .2s,border-color .2s}
+.refresh:hover{background:#edf5ff;border-color:#a2c3e9}.refresh svg{color:#005db9}
+.refresh.is-refreshing svg{animation:spin 1s linear infinite}
+.refresh:disabled{opacity:1;color:#64768a}
+.board thead{background:#edf4fb}.board th{font-size:12px;color:#526d89;height:46px}
+.board td{height:80px}.board tbody tr:hover{background:#edf5ff}
+.team strong{font-size:16px;color:#18344e;font-weight:650}
+.team-icon,.tone-1,.tone-2,.tone-3{background:#edf4fc;color:#005db9;border-color:#d9e7f7}
+.team-icon{border-radius:10px;transition:transform .25s}
+.board tbody tr:hover .team-icon{transform:translateY(-2px)}
+.team div>span{color:#657b91;letter-spacing:.6px}
+.leading-row{background:#f0f6fd}
+.leading-row td:first-child{box-shadow:inset 3px 0 #d50058}
+.rank-number.first{background:#005db9;color:#fff}
+.leader-cup{color:#d50058}
+.points strong{color:#005db9;font-weight:750;font-size:25px;letter-spacing:-.5px}
+.score-track{height:6px;background:#e2ebf5}
+.score-track>div{background:#005db9;transition:width .8s cubic-bezier(.2,.7,.2,1)}
+.board-footer{font-size:12px;color:#61758a;background:#f8fafd;padding:20px 30px}
+footer{max-width:1200px;padding-top:24px;color:#61758a}.footer-brand{color:#005db9}
+.connection-notice{margin:0;padding:12px 30px;background:#fff5f8;border-top:1px solid #f4d4e0;color:#8c1748;font-size:14px}
+.skip-link{position:fixed;top:-100px;left:20px;background:#005db9;color:#fff;z-index:100;padding:12px 20px;border-radius:6px}.skip-link:focus{top:12px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d50058;outline-offset:4px}
+.agenda-main{min-height:75vh;padding-top:50px}
+.agenda-main h1{color:#005db9;font-size:clamp(30px,4vw,44px);font-weight:650}
+.agenda-empty{margin-top:36px;background:white;border:1px solid #dce6f0;border-radius:16px;padding:58px 32px;text-align:center;animation:surface-in .5s ease both}
+.agenda-icon{display:grid;place-items:center;width:72px;height:72px;background:#edf4fc;color:#005db9;border-radius:18px;margin:0 auto 24px}
+.agenda-empty h2{font-size:24px}.agenda-empty p{color:#61758a;font-size:16px;line-height:1.7}
+.back-link{display:inline-flex;gap:10px;align-items:center;min-height:44px;color:#005db9;margin-top:18px;font-size:14px;font-weight:650}
+@keyframes surface-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes photo-settle{from{transform:scale(1.025)}to{transform:scale(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:1050px){.brand-caption{display:none}}
+@media(max-width:800px){
+ .site-header{padding:0 20px;gap:10px;min-height:0}
+ .brand-logo{width:108px;height:77px;padding:6px 9px}
+ .brand-caption{display:block;font-size:13px;max-width:170px}
+ .organizer{margin-left:auto;font-size:13px}
+ nav{gap:28px;margin:0}nav a{padding:14px 0;min-height:48px}
+ .main{padding:24px 18px 40px}
+ .cover-content{padding:34px 28px}.cover-content h1{font-size:52px}
+ .cover-caption{font-size:15px}.cover-location{top:32px;right:24px}
+ .stats{grid-template-columns:1fr 1fr}.stats>div{padding:20px;gap:12px}
+ .stats .leader-stat{padding:18px 20px}.stats strong{font-size:26px}.leader-stat strong{font-size:21px}
+ .board-heading{padding:24px 20px}.board-title h2{font-size:23px}
+ .refresh{margin-left:30px;padding:10px 12px;font-size:12px}
+ .board-footer{padding:18px 20px}footer{margin-inline:20px}
+ .agenda-main{padding-top:32px}.agenda-empty{padding:40px 22px}
+}
+@media(max-width:450px){
+ .site-header{padding-inline:16px}.brand{gap:12px}.brand-caption{font-size:12px;max-width:150px}.brand-caption small{font-size:12px}
+ .organizer{padding:11px;min-width:44px}.organizer svg{width:18px;height:18px}
+ .cover-content{padding:29px 24px}.cover-content h1{font-size:46px}.cover-content .eyebrow{font-size:12px;letter-spacing:1.5px}
+ .cover-shade{background:linear-gradient(90deg,#003566ed,#00356660),linear-gradient(0deg,#003566b0,transparent)}
+ .stats>div{padding:18px 14px;gap:7px}.stat-label{font-size:11px;letter-spacing:.7px}
+ .stats small{font-size:12px}.stats .leader-stat{padding:16px 14px}.stats .leader-stat>div{gap:10px}
+ .leader-stat strong{font-size:20px}.team{gap:9px}.team strong{font-size:14px}.team div>span{font-size:11px}
+ .team-icon{width:30px;height:34px}.rank{width:43px}.points{padding-right:14px!important;width:64px}.points strong{font-size:23px}
+ .leader-cup{width:14px;margin-left:0}.board td{height:76px}
+ .board-title h2{font-size:21px}.board-heading p{font-size:13px}.board-title{gap:10px}
+ .connection-notice{padding:14px 20px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
