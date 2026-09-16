@@ -38,7 +38,7 @@ export default function ParticipantFinder({ open, onOpenChange, onSelect }: Prop
         </label>
         <div className="finder-results" role="listbox" aria-label="Участники">
           {matches.map((participant) => (
-            <button type="button" role="option" aria-selected="false" key={`${participant.teamId}-${participant.name}`} onClick={() => onSelect(participant.teamId, participant.name)}>
+            <button type="button" role="option" aria-selected="false" key={`${participant.teamId}-${participant.name}`} onClick={() => { setQuery(''); onSelect(participant.teamId, participant.name); }}>
               <span>{participant.name}</span><small>Команда «{participant.teamName}»</small>
             </button>
           ))}

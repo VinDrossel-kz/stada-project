@@ -5,7 +5,27 @@ import { Compass, Flag, MapPin, Mountain, RefreshCw, Search, Trophy } from 'luci
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Header from './header';
 import ParticipantFinder from './participant-finder';
-import { initialTeams, Team } from './teams';
+import { initialTeams, participants, Team } from './teams';
+
+const PARTICIPANT_COOKIE = 'stada_participant';
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 180;
+
+function readSavedParticipant() {
+  const entry = document.cookie.split('; ').find((cookie) => cookie.startsWith(`${PARTICIPANT_COOKIE}=`));
+  if (!entry) return null;
+  try {
+    const saved = JSON.parse(decodeURIComponent(entry.slice(PARTICIPANT_COOKIE.length + 1))) as { name?: string; teamId?: number };
+    return participants.find((participant) => participant.name === saved.name && participant.teamId === saved.teamId) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function saveParticipant(teamId: number, name: string) {
+  const value = encodeURIComponent(JSON.stringify({ teamId, name }));
+  const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+  document.cookie = `${PARTICIPANT_COOKIE}=${value}; Max-Age=${COOKIE_MAX_AGE}; Path=/; SameSite=Lax${secure}`;
+}
 
 export default function Board() {
   const [teams, setTeams] = useState<Team[]>(initialTeams);
@@ -13,7 +33,7 @@ export default function Board() {
   const [error, setError] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [finderOpen, setFinderOpen] = useState(true);
+  const [finderOpen, setFinderOpen] = useState(false);
   const [selectedTeamId, setSelectedTeamId] = useState<number | null>(null);
   const [selectedParticipant, setSelectedParticipant] = useState('');
   const inFlight = useRef(false);
@@ -51,7 +71,25 @@ export default function Board() {
     return () => { clearTimeout(firstLoad); clearInterval(timer); document.removeEventListener('visibilitychange', tick); };
   }, [refresh]);
 
+  useEffect(() => {
+    let scrollTimer: number | undefined;
+    const restoreTimer = window.setTimeout(() => {
+      const saved = readSavedParticipant();
+      if (!saved) {
+        setFinderOpen(true);
+        return;
+      }
+      setSelectedTeamId(saved.teamId);
+      setSelectedParticipant(saved.name);
+      scrollTimer = window.setTimeout(() => {
+        document.getElementById(`team-${saved.teamId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 350);
+    }, 0);
+    return () => { clearTimeout(restoreTimer); if (scrollTimer) clearTimeout(scrollTimer); };
+  }, []);
+
   const showTeam = (teamId: number, participantName: string) => {
+    saveParticipant(teamId, participantName);
     setFinderOpen(false);
     setSelectedTeamId(teamId);
     setSelectedParticipant(participantName);
@@ -89,11 +127,11 @@ export default function Board() {
         <div className="board-heading">
           <div className="board-title"><span className="section-index">01 /</span><div><h2>Рейтинг команд</h2><p>Каждый балл приближает к вершине</p></div></div>
           <div className="board-heading-actions">
-            <button className="find-me-button" type="button" onClick={() => setFinderOpen(true)}><Search size={15}/>Найти себя</button>
+            <button className="find-me-button" type="button" onClick={() => setFinderOpen(true)}><Search size={15}/>{selectedParticipant ? 'Сменить участника' : 'Найти себя'}</button>
             <button disabled={refreshing} aria-busy={refreshing} className={'refresh ' + (error ? 'error ' : '') + (refreshing ? 'is-refreshing' : '')} onClick={refresh} aria-label={status + '. Обновить результаты'}><RefreshCw size={14}/><span role="status" aria-live="polite">{refreshing ? 'Обновляем…' : status}</span></button>
           </div>
         </div>
-        {selectedParticipant && <div className="selected-team-notice" role="status"><strong>{selectedParticipant}</strong>, ваша команда выделена в рейтинге.</div>}
+        {selectedParticipant && <div className="selected-team-notice" role="status"><span><strong>{selectedParticipant}</strong>, ваша команда сохранена на этом устройстве.</span><button type="button" onClick={() => setFinderOpen(true)}>Сменить</button></div>}
         {error && loaded && <p className="connection-notice" role="status">Показываем последние загруженные баллы. Связь восстанавливается.</p>}
         <Table>
           <caption className="sr-only">Рейтинг 14 команд — места и количество баллов</caption>
@@ -101,9 +139,9 @@ export default function Board() {
           <TableBody>{sorted.map((team) => {
             const rank = started ? sorted.findIndex((entry) => entry.score === team.score) + 1 : null;
             const selected = team.id === selectedTeamId;
-            return <TableRow id={`team-${team.id}`} key={team.id} className={`${rank === 1 ? 'leading-row ' : ''}${selected ? 'selected-team-row' : ''}`}>
+            return <TableRow id={`team-${team.id}`} key={team.id} className={`${rank === 1 ? 'leading-row ' : ''}${selected ? 'own-team-row' : ''}`}>
               <TableCell className="rank"><span className={rank === 1 ? 'rank-number first' : 'rank-number'}>{rank === null ? '—' : String(rank).padStart(2, '0')}</span></TableCell>
-              <TableCell><div className="team"><span className={`team-icon tone-${team.id % 4}`}><Mountain size={22}/></span><div><strong>{team.name}</strong><span>КОМАНДА {String(team.id).padStart(2, '0')}</span></div>{rank === 1 && <Trophy className="leader-cup" size={17}/>}</div></TableCell>
+              <TableCell><div className="team"><span className={`team-icon tone-${team.id % 4}`}><Mountain size={22}/></span><div className="team-info"><strong>{team.name}</strong><span>КОМАНДА {String(team.id).padStart(2, '0')}</span></div><div className="team-statuses">{rank === 1 && <span className="leader-badge"><Trophy size={13}/>Лидер</span>}{selected && <span className="own-team-badge">Ваша команда</span>}</div></div></TableCell>
               <TableCell className="progress-cell"><div className="score-track"><div style={{ width: max > 0 ? `${Math.max(0, team.score) / max * 100}%` : '0%' }}/></div></TableCell>
               <TableCell className="points"><strong>{!loaded ? '—' : team.score}</strong></TableCell>
             </TableRow>;
