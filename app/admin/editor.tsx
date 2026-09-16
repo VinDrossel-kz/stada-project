@@ -1,11 +1,78 @@
 'use client';
-import {useEffect,useState,useCallback} from 'react';
-import {Team} from '../teams';
-export default function Editor(){const [teams,setTeams]=useState<Team[]>([]);const [draft,setDraft]=useState<Record<number,string>>({});const [message,setMessage]=useState('Загружаем результаты…');const [busy,setBusy]=useState<number|null>(null);
-const load=useCallback(async()=>{try{const r=await fetch('/api/scores',{cache:'no-store'});if(!r.ok)throw Error();const d=await r.json() as {teams:Team[];error?:string};setTeams(d.teams);setDraft(Object.fromEntries(d.teams.map((t:Team)=>[t.id,String(t.score)])));setMessage('')}catch{setMessage('Не удалось загрузить результаты. Попробуйте ещё раз.')}},[]);
-useEffect(()=>{load()},[load]);
-const save=useCallback(async(id:number,value:string)=>{const team=teams.find(t=>t.id===id);const score=Number(value);if(!team||value.trim()===''||!Number.isInteger(score)||score<0||score>1000000){setMessage('Введите целое число от 0 до 1 000 000.');throw Error('Invalid score')}
-setBusy(id);try{const r=await fetch('/api/scores',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,score,previous:team.score})});const d=await r.json() as {teams:Team[];error?:string};if(!r.ok)throw Error(d.error||'Не удалось сохранить результат');setTeams(d.teams);setDraft(old=>({...old,[id]:String(score)}));setMessage(`${team.name}: ${score} баллов. Сохранено.`);return {team:team.name,score}}catch(e){setMessage(e instanceof Error?e.message:'Не удалось сохранить результат');throw e}finally{setBusy(null)}},[teams]);
-useEffect(()=>{const context=(document as Document & {modelContext?:{registerTool:(tool:unknown,options:unknown)=>void|Promise<void>}}).modelContext;if(!context?.registerTool)return;const lifecycle=new AbortController();try{Promise.resolve(context.registerTool({name:'set_team_score',description:'Save the — итоговые баллы for one team as the signed-in organizer and update the visible score editor.',inputSchema:{type:'object',properties:{teamId:{type:'integer',minimum:1,maximum:14},score:{type:'integer',minimum:0,maximum:1000000}},required:['teamId','score'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute:async(input:unknown)=>{const d=input as {teamId:number;score:number};if(!d||!Number.isInteger(d.teamId)||!Number.isInteger(d.score))throw Error('Invalid input');return save(d.teamId,String(d.score))}},{signal:lifecycle.signal})).catch(()=>{})}catch{}return()=>lifecycle.abort()},[save]);
-return <section className="board"><div className="board-heading"><h2>Результаты команд</h2><button className="refresh" onClick={load} disabled={busy!==null}>Обновить</button></div><p className="admin-message" role="status">{message}</p>{teams.map(t=><form key={t.id} className="admin-row" onSubmit={e=>{e.preventDefault();save(t.id,draft[t.id]).catch(()=>{})}}><label htmlFor={'score-'+t.id}>{t.name}</label><input id={'score-'+t.id} aria-label={t.name+' — итоговые баллы'} type="number" min="0" max="1000000" step="1" required value={draft[t.id]??''} onChange={e=>setDraft({...draft,[t.id]:e.target.value})}/><button className="save-button" disabled={busy!==null}>{busy===t.id?'Сохраняем…':'Сохранить'}</button></form>)}</section>}
 
+import { FormEvent, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Team } from '../teams';
+
+export default function Editor({ initialTeams }: { initialTeams: Team[] }) {
+  const router = useRouter();
+  const [teams, setTeams] = useState<Team[]>(initialTeams);
+  const [draft, setDraft] = useState<Record<number, string>>(() => Object.fromEntries(initialTeams.map((team) => [team.id, String(team.score)])));
+  const [message, setMessage] = useState(initialTeams.length ? '' : 'Не удалось загрузить результаты. Нажмите «Обновить».');
+  const [busy, setBusy] = useState<number | null>(null);
+
+  async function load() {
+    try {
+      const response = await fetch('/api/scores', { cache: 'no-store' });
+      if (!response.ok) throw new Error();
+      const data = await response.json() as { teams: Team[] };
+      setTeams(data.teams);
+      setDraft(Object.fromEntries(data.teams.map((team) => [team.id, String(team.score)])));
+      setMessage('');
+    } catch {
+      setMessage('Не удалось загрузить результаты. Попробуйте ещё раз.');
+    }
+  }
+
+  async function save(event: FormEvent<HTMLFormElement>, team: Team) {
+    event.preventDefault();
+    const value = draft[team.id] ?? '';
+    const score = Number(value);
+    if (value.trim() === '' || !Number.isInteger(score) || score < 0 || score > 1_000_000) {
+      setMessage('Введите целое число от 0 до 1 000 000.');
+      return;
+    }
+
+    setBusy(team.id);
+    try {
+      const response = await fetch('/api/scores', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: team.id, score, previous: team.score }),
+      });
+      const data = await response.json() as { teams?: Team[]; error?: string };
+      if (!response.ok || !data.teams) throw new Error(data.error || 'Не удалось сохранить результат.');
+      setTeams(data.teams);
+      setDraft(Object.fromEntries(data.teams.map((item) => [item.id, String(item.score)])));
+      setMessage(`${team.name}: ${score} баллов. Сохранено.`);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Не удалось сохранить результат.');
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function logout() {
+    await fetch('/api/admin/logout', { method: 'POST' });
+    router.refresh();
+  }
+
+  return <>
+    <div className="admin-toolbar">
+      <p>Изменения сразу появятся в общем рейтинге.</p>
+      <button className="refresh" type="button" onClick={logout}>Выйти</button>
+    </div>
+    <section className="board">
+      <div className="board-heading">
+        <h2>Баллы команд</h2>
+        <button className="refresh" type="button" onClick={() => void load()} disabled={busy !== null}>Обновить</button>
+      </div>
+      <p className="admin-message" role="status">{message}</p>
+      {teams.map((team) => <form key={team.id} className="admin-row" onSubmit={(event) => void save(event, team)}>
+        <label htmlFor={`score-${team.id}`}>{team.name}</label>
+        <input id={`score-${team.id}`} aria-label={`${team.name} — итоговые баллы`} type="number" min="0" max="1000000" step="1" required value={draft[team.id] ?? ''} onChange={(event) => setDraft((current) => ({ ...current, [team.id]: event.target.value }))} />
+        <button className="save-button" disabled={busy !== null}>{busy === team.id ? 'Сохраняем…' : 'Сохранить'}</button>
+      </form>)}
+    </section>
+  </>;
+}
