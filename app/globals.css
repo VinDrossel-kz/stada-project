@@ -110,3 +110,42 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d500
  .connection-notice{padding:14px 20px}
 }
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Participant finder and team roster */
+.board-heading-actions{display:flex;align-items:center;gap:10px}
+.find-me-button{display:flex;align-items:center;gap:7px;min-height:44px;padding:10px 14px;border:0;border-radius:8px;background:#005db9;color:#fff;font-size:13px;font-weight:650;white-space:nowrap;transition:background .2s,transform .2s}
+.find-me-button:hover{background:#004b95;transform:translateY(-1px)}
+.selected-team-notice{padding:13px 30px;background:#eaf4ff;border-top:1px solid #cfe2f6;color:#28506f;font-size:14px}
+.selected-team-row{background:#e7f3ff!important;box-shadow:inset 4px 0 #d50058;scroll-margin-top:30vh;animation:team-highlight 1.1s ease both}
+.finder-overlay{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:#001d3bc7;backdrop-filter:blur(8px);animation:finder-fade .2s ease both}
+.finder-dialog{position:relative;width:min(590px,100%);max-height:min(720px,calc(100vh - 40px));display:flex;flex-direction:column;padding:30px;background:#fff;border-radius:18px;box-shadow:0 28px 90px #001b38a8;animation:finder-enter .3s cubic-bezier(.2,.8,.2,1) both}
+.finder-dialog h2{margin:15px 0 7px;color:#005db9;font-size:28px;line-height:1.2}
+.finder-dialog>p{margin:0 38px 22px 0;color:#60758b;font-size:15px;line-height:1.55}
+.finder-icon{display:grid;place-items:center;width:50px;height:50px;border-radius:14px;background:#eaf3fd;color:#005db9}
+.finder-close{position:absolute;top:20px;right:20px;display:grid;place-items:center;width:42px;height:42px;border:1px solid #dce6f0;border-radius:50%;background:#fff;color:#526b82}
+.finder-close:hover{background:#edf5ff;color:#005db9}
+.finder-search{min-height:52px;display:flex;align-items:center;gap:10px;padding:0 15px;border:2px solid #c8d9ea;border-radius:10px;color:#005db9;background:#fff;transition:border-color .2s,box-shadow .2s}
+.finder-search:focus-within{border-color:#005db9;box-shadow:0 0 0 4px #005db91a}
+.finder-search input{width:100%;height:48px;border:0;outline:0;background:transparent;color:#18344e;font:inherit;font-size:16px}
+.finder-search input::placeholder{color:#8192a3}
+.finder-results{min-height:90px;max-height:330px;overflow:auto;margin-top:12px;border:1px solid #e0e9f1;border-radius:10px;background:#fbfdff}
+.finder-results button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 14px;border:0;border-bottom:1px solid #e8eef4;background:transparent;text-align:left;color:#18344e;font-size:15px}
+.finder-results button:last-child{border-bottom:0}.finder-results button:hover,.finder-results button:focus-visible{background:#eaf4ff}
+.finder-results small{flex-shrink:0;color:#647b91;font-size:12px}
+.finder-empty{padding:28px 18px;text-align:center;color:#647b91;font-size:14px}
+.finder-skip{align-self:center;margin-top:17px;padding:7px 8px;border:0;background:transparent;color:#557086;font-size:13px;text-decoration:underline;text-underline-offset:4px}
+.finder-skip:hover{color:#005db9}
+.teams-main{padding-top:50px}.teams-intro{margin-bottom:32px}.teams-intro .eyebrow{color:#005db9}.teams-intro h1{margin:0;color:#005db9;font-size:clamp(34px,5vw,54px);font-weight:750;letter-spacing:-1.5px}.teams-intro>p:not(.eyebrow){margin:10px 0;color:#60758b;font-size:17px}
+.teams-summary{display:flex;align-items:center;gap:7px;margin-top:20px;color:#526d89;font-size:14px}.teams-summary svg{color:#d50058}.teams-summary strong{color:#18344e}
+.roster-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.roster-card{overflow:hidden;background:#fff;border:1px solid #dce6f0;border-radius:14px;box-shadow:0 8px 25px #00376f08;scroll-margin-top:20px}
+.roster-card>header{display:flex;align-items:center;gap:13px;padding:20px 22px;border-bottom:1px solid #e8eef4;background:#f8fbfe}
+.roster-card header>div{flex:1}.roster-card header small{display:block;margin-bottom:3px;color:#71869b;font-size:11px;letter-spacing:1.1px}.roster-card h2{margin:0;font-size:22px}.member-count{display:grid;place-items:center;min-width:34px;height:34px;padding:0 8px;border-radius:17px;background:#005db9;color:#fff;font-size:13px;font-weight:700}
+.roster-card ol{margin:0;padding:10px 22px 15px 56px;counter-reset:member-list}.roster-card li{padding:9px 0 9px 5px;border-bottom:1px solid #edf1f5;color:#5f7488;font-size:13px}.roster-card li:last-child{border-bottom:0}.roster-card li span{color:#18344e;font-size:14px}
+@keyframes finder-fade{from{opacity:0}to{opacity:1}}@keyframes finder-enter{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}@keyframes team-highlight{0%{box-shadow:inset 4px 0 #d50058,0 0 0 3px #d5005840}100%{box-shadow:inset 4px 0 #d50058,0 0 0 0 transparent}}
+@media(max-width:800px){
+ .board-heading-actions{width:100%;margin-left:30px;flex-wrap:wrap}.find-me-button{font-size:12px}.board-heading-actions .refresh{margin-left:0}
+ .finder-dialog{padding:24px 20px;max-height:calc(100vh - 24px);border-radius:14px}.finder-dialog h2{font-size:24px}.finder-dialog>p{font-size:14px}.finder-results{max-height:38vh}.finder-results button{align-items:flex-start;flex-direction:column;gap:3px}
+ .teams-main{padding-top:34px}.roster-grid{grid-template-columns:1fr}.roster-card>header{padding:18px}.roster-card ol{padding-right:18px}
+}
+@media(max-width:450px){.finder-overlay{padding:12px}.finder-dialog{padding:22px 16px}.finder-close{top:16px;right:16px}.finder-dialog>p{margin-right:26px}.finder-search input{font-size:15px}.board-heading-actions{margin-left:0}.teams-intro h1{font-size:36px}.roster-card h2{font-size:20px}}

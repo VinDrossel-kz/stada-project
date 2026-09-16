@@ -1,4 +1,4 @@
-import {LockKeyhole, Trophy, CalendarDays} from 'lucide-react';
+import {LockKeyhole, Trophy, CalendarDays, Users} from 'lucide-react';
 import Link from 'next/link';
 export default function Header({active='standings'}:{active?:string}) {
   return <>
@@ -10,6 +10,7 @@ export default function Header({active='standings'}:{active?:string}) {
       </Link>
       <nav aria-label="Главное меню">
         <Link href="/" aria-current={active==='standings'?'page':undefined}><Trophy size={18}/>Рейтинг команд</Link>
+        <Link href="/teams" aria-current={active==='teams'?'page':undefined}><Users size={18}/>Участники</Link>
         <Link href="/agenda" aria-current={active==='agenda'?'page':undefined}><CalendarDays size={18}/>Программа</Link>
       </nav>
       <a className="organizer" href="/admin" aria-label="Кабинет организатора"><LockKeyhole size={17}/><span>Организатор</span></a>
