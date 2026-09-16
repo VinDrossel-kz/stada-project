@@ -85,6 +85,7 @@ export default function Board() {
       }
       setSelectedTeamId(saved.teamId);
       setSelectedParticipant(saved.name);
+      setExpandedTeamId(saved.teamId);
       scrollTimer = window.setTimeout(() => {
         document.getElementById(`team-${saved.teamId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 350);
@@ -97,6 +98,7 @@ export default function Board() {
     setFinderOpen(false);
     setSelectedTeamId(teamId);
     setSelectedParticipant(participantName);
+    setExpandedTeamId(teamId);
     window.setTimeout(() => {
       document.getElementById(`team-${teamId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 120);
