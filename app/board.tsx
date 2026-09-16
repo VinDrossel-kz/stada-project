@@ -1,11 +1,12 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Compass, Flag, MapPin, Mountain, RefreshCw, Search, Trophy } from 'lucide-react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { ChevronDown, Compass, Flag, MapPin, Mountain, RefreshCw, Search, Trophy } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Header from './header';
 import ParticipantFinder from './participant-finder';
 import { initialTeams, participants, Team } from './teams';
+import { games as initialGames, Game } from './games';
 
 const PARTICIPANT_COOKIE = 'stada_participant';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 180;
@@ -36,6 +37,8 @@ export default function Board() {
   const [finderOpen, setFinderOpen] = useState(false);
   const [selectedTeamId, setSelectedTeamId] = useState<number | null>(null);
   const [selectedParticipant, setSelectedParticipant] = useState('');
+  const [games, setGames] = useState<Game[]>(initialGames);
+  const [expandedTeamId, setExpandedTeamId] = useState<number | null>(null);
   const inFlight = useRef(false);
 
   const refresh = useCallback(async () => {
@@ -45,12 +48,13 @@ export default function Board() {
     try {
       const response = await fetch('/api/scores', { cache: 'no-store', signal: AbortSignal.timeout(15000) });
       if (!response.ok) throw Error();
-      const data = await response.json() as { teams: Team[] };
+      const data = await response.json() as { games: Game[]; teams: Team[] };
       const scores = new Map(data.teams.map((team) => [team.id, team]));
       setTeams(initialTeams.map((team) => {
         const live = scores.get(team.id);
-        return { ...team, score: live?.score ?? 0, updated_at: live?.updated_at ?? null };
+        return { ...team, score: live?.score ?? 0, updated_at: live?.updated_at ?? null, game_scores: live?.game_scores ?? [] };
       }));
+      setGames(data.games);
       setLoaded(true);
       setError(false);
       setStatus('Обновлено в ' + new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }));
@@ -139,12 +143,13 @@ export default function Board() {
           <TableBody>{sorted.map((team) => {
             const rank = started ? sorted.findIndex((entry) => entry.score === team.score) + 1 : null;
             const selected = team.id === selectedTeamId;
-            return <TableRow id={`team-${team.id}`} key={team.id} className={`${rank === 1 ? 'leading-row ' : ''}${selected ? 'own-team-row' : ''}`}>
+            const expanded = expandedTeamId === team.id;
+            return <Fragment key={team.id}><TableRow id={`team-${team.id}`} className={`${rank === 1 ? 'leading-row ' : ''}${selected ? 'own-team-row' : ''}`}>
               <TableCell className="rank"><span className={rank === 1 ? 'rank-number first' : 'rank-number'}>{rank === null ? '—' : String(rank).padStart(2, '0')}</span></TableCell>
-              <TableCell><div className="team"><span className={`team-icon tone-${team.id % 4}`}><Mountain size={22}/></span><div className="team-info"><strong>{team.name}</strong><span>КОМАНДА {String(team.id).padStart(2, '0')}</span></div><div className="team-statuses">{rank === 1 && <span className="leader-badge"><Trophy size={13}/>Лидер</span>}{selected && <span className="own-team-badge">Ваша команда</span>}</div></div></TableCell>
+              <TableCell><button type="button" className="team team-expand" aria-expanded={expanded} aria-controls={`team-games-${team.id}`} onClick={() => setExpandedTeamId(expanded ? null : team.id)}><span className={`team-icon tone-${team.id % 4}`}><Mountain size={22}/></span><span className="team-info"><strong>{team.name}</strong><span>КОМАНДА {String(team.id).padStart(2, '0')}</span></span><span className="team-statuses">{rank === 1 && <span className="leader-badge"><Trophy size={13}/>Лидер</span>}{selected && <span className="own-team-badge">Ваша команда</span>}</span><ChevronDown className={`team-chevron ${expanded ? 'is-open' : ''}`} size={18}/></button></TableCell>
               <TableCell className="progress-cell"><div className="score-track"><div style={{ width: max > 0 ? `${Math.max(0, team.score) / max * 100}%` : '0%' }}/></div></TableCell>
               <TableCell className="points"><strong>{!loaded ? '—' : team.score}</strong></TableCell>
-            </TableRow>;
+            </TableRow>{expanded && <TableRow id={`team-games-${team.id}`} className={`team-details-row ${selected ? 'own-team-details' : ''}`}><TableCell colSpan={4}><div className="game-breakdown"><div className="game-breakdown-heading"><strong>Баллы по играм</strong><span>Итого: {team.score}</span></div><div className="game-score-grid">{games.map((game) => <div className="game-score-item" key={game.id}><span><small>{game.stage}</small>{game.name}</span><strong>{team.game_scores.find((entry) => entry.game_id === game.id)?.score ?? 0}</strong></div>)}</div></div></TableCell></TableRow>}</Fragment>;
           })}</TableBody>
         </Table>
         <div className="board-footer"><span>При равном количестве баллов команды делят место.</span><span><RefreshCw size={12}/> Автообновление каждые 10 сек.</span></div>

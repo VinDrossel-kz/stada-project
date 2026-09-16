@@ -179,3 +179,38 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d500
 .own-team-row .team-icon{background:#fff;border-color:#efb6ce;color:#d50058}
 @media(max-width:800px){.team-statuses{max-width:120px}.team .team-statuses>span{font-size:10px;padding:4px 7px}.selected-team-notice{padding-inline:20px}}
 @media(max-width:450px){.team-statuses{max-width:92px}.team .team-statuses>span{white-space:normal;text-align:center;line-height:1.15}.selected-team-notice{align-items:flex-start;flex-direction:column;gap:9px}}
+
+/* Per-game scoring and expandable team details. */
+.team-expand{width:100%;padding:0;border:0;background:transparent;text-align:left;color:inherit}
+.team-expand .team-info{display:block;flex:1}
+.team-expand .team-info>span{display:block;margin-top:4px;color:#657b91;font-size:12px;letter-spacing:.6px}
+.team-chevron{flex:0 0 auto;margin-left:4px;color:#6c8195;transition:transform .2s}
+.team-chevron.is-open{transform:rotate(180deg)}
+.team-details-row,.board tbody tr.team-details-row:hover{background:#f8fbfe}
+.team-details-row td{height:auto!important;padding:0!important;border-bottom:1px solid #dfe8f1}
+.own-team-details,.board tbody tr.own-team-details:hover{background:#fff7fa!important}
+.game-breakdown{padding:22px 30px 26px 95px}
+.game-breakdown-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:15px}
+.game-breakdown-heading strong{color:#005db9;font-size:15px}.game-breakdown-heading span{color:#526d89;font-size:13px;font-weight:700}
+.game-score-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px}
+.game-score-item{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:57px;padding:10px 14px;border:1px solid #dfe8f1;border-radius:9px;background:#fff}
+.game-score-item>span{display:flex;flex-direction:column;min-width:0;color:#253f58;font-size:13px;line-height:1.35}
+.game-score-item small{margin-bottom:3px;color:#73879a;font-size:10px;font-weight:700;letter-spacing:.8px}
+.game-score-item>strong{flex:0 0 auto;color:#005db9;font-size:19px;font-variant-numeric:tabular-nums}
+.admin-panel{max-width:980px}
+.admin-scoreboard{overflow:hidden;border:1px solid #dce6f0;border-radius:12px;background:#fff;box-shadow:0 8px 30px #00376f08}
+.admin-scoreboard-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px 26px;border-bottom:1px solid #e7eef5}
+.admin-scoreboard-heading h2{margin:0}.admin-scoreboard-heading p{margin:4px 0 0;color:#64768a;font-size:13px}
+.admin-team-list{padding:12px}
+.admin-team-card{margin:8px 0;border:1px solid #dce6f0;border-radius:10px;background:#fff;overflow:hidden}
+.admin-team-card>summary{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 18px;background:#f8fbfe;cursor:pointer;list-style-position:inside}
+.admin-team-card>summary:hover{background:#edf5ff}.admin-team-card>summary::marker{color:#005db9}
+.admin-team-card>summary>span:first-of-type{display:inline-flex;flex-direction:column;gap:2px;margin-left:7px;vertical-align:middle}
+.admin-team-card>summary small{color:#71869b;font-size:10px;letter-spacing:.9px}.admin-team-card>summary strong{color:#18344e;font-size:16px}
+.admin-total{display:flex;align-items:baseline;gap:9px;margin-left:auto}.admin-total strong{color:#005db9!important;font-size:23px!important;font-variant-numeric:tabular-nums}
+.admin-games{border-top:1px solid #e7eef5}
+.admin-game-row{display:grid;grid-template-columns:minmax(250px,1fr) 100px 112px;gap:12px;align-items:center;padding:12px 18px;border-bottom:1px solid #edf1f5}
+.admin-game-row:last-child{border-bottom:0}.admin-game-row label{display:flex;flex-direction:column;gap:2px}.admin-game-row label small{color:#71869b;font-size:10px;font-weight:750;letter-spacing:.8px}.admin-game-row label span{color:#27445e;font-size:14px}
+.admin-game-row input{width:100%;padding:10px;border:1px solid #c8d6e2;border-radius:7px;background:#fbfdff;color:#18344e;font-size:16px;font-variant-numeric:tabular-nums}
+@media(max-width:800px){.game-breakdown{padding:18px 20px}.game-score-grid{grid-template-columns:1fr}.admin-scoreboard-heading{align-items:flex-start;padding:20px;flex-wrap:wrap}.admin-team-list{padding:8px}.admin-game-row{grid-template-columns:1fr 78px 98px;padding:11px 13px;gap:8px}.admin-game-row .save-button{padding-inline:9px}.admin-toolbar{align-items:flex-start}}
+@media(max-width:520px){.team-statuses{display:none}.game-breakdown-heading{align-items:flex-start;flex-direction:column;gap:4px}.game-score-item{padding:9px 11px}.admin-game-row{grid-template-columns:1fr 76px}.admin-game-row label{grid-column:1/-1}.admin-game-row .save-button{min-height:42px}.admin-team-card>summary{padding:14px}.admin-total{gap:5px}.admin-total small{display:none}}

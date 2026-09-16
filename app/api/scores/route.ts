@@ -11,8 +11,8 @@ export async function GET() {
     });
     if (!response.ok) throw new Error('Scores returned ' + response.status);
     const data = await response.json();
-    if (!data || typeof data !== 'object' || !('teams' in data) || !Array.isArray(data.teams)) throw new Error('Invalid scores response');
-    return Response.json({ teams: data.teams }, { headers });
+    if (!data || typeof data !== 'object' || !('teams' in data) || !Array.isArray(data.teams) || !('games' in data) || !Array.isArray(data.games)) throw new Error('Invalid scores response');
+    return Response.json({ games: data.games, teams: data.teams }, { headers });
   } catch (error) {
     console.error('Load scores failed', error);
     return Response.json(

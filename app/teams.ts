@@ -3,7 +3,10 @@ export type Team = {
   name: string;
   score: number;
   updated_at: string | null;
+  game_scores: GameScore[];
 };
+
+export type GameScore = { game_id: number; score: number; updated_at: string | null };
 
 export type TeamRoster = {
   id: number;
@@ -35,6 +38,7 @@ export const initialTeams: Team[] = teamRosters.map((team) => ({
   name: team.name,
   score: 0,
   updated_at: null,
+  game_scores: [],
 }));
 
 export const participants = teamRosters.flatMap((team) =>
