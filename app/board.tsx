@@ -87,7 +87,7 @@ export default function Board() {
       setSelectedParticipant(saved.name);
       setExpandedTeamId(saved.teamId);
       scrollTimer = window.setTimeout(() => {
-        document.getElementById(`team-${saved.teamId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById(`team-games-${saved.teamId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 350);
     }, 0);
     return () => { clearTimeout(restoreTimer); if (scrollTimer) clearTimeout(scrollTimer); };
@@ -100,7 +100,7 @@ export default function Board() {
     setSelectedParticipant(participantName);
     setExpandedTeamId(teamId);
     window.setTimeout(() => {
-      document.getElementById(`team-${teamId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById(`team-games-${teamId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 120);
   };
 
