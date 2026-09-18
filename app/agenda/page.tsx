@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { CalendarDays, MapPin, Users, UserRound } from 'lucide-react';
 import Header from '../header';
 import { useParticipant } from '../participant-context';
-import { agendaTimezone, dayLabel, eventDays, getAgenda, getAgendaStatus, scheduleNote, timeLabel } from '../agenda-model';
+import { agendaTimezone, dayLabel, eventDays, getAgenda, getAgendaStatus, timeLabel } from '../agenda-model';
 import { teamRosters } from '../teams';
 import { useConferenceClock } from '../use-conference-clock';
 export default function Agenda() {
@@ -27,7 +27,6 @@ export default function Agenda() {
     {participant && <div className="agenda-view" role="group" aria-label="Вид программы"><button type="button" aria-pressed={view === 'personal'} onClick={() => setView('personal')}>Моя программа</button><button type="button" aria-pressed={view === 'general'} onClick={() => setView('general')}>Общая программа</button></div>}
     <div className="agenda-days" role="group" aria-label="День конференции">{eventDays.map((date, index) => <button type="button" key={date} aria-pressed={day === date} onClick={() => setChosenDay(date)}><small>ДЕНЬ {index + 1}</small><strong>{dayLabel(date)}</strong><span>{['Заезд', 'Общая программа', 'Командные станции', 'Выезд'][index]}</span></button>)}</div>
     <div className="agenda-day-heading"><h2><CalendarDays size={22}/>{dayLabel(day)}</h2><span>{personal ? `Маршрут команды «${participant?.teamName}»` : 'Общая программа'}</span></div>
-    {day === '2026-09-23' && <p className="agenda-note">{scheduleNote}</p>}
     <ol className="agenda-events">{events.filter((event) => event.date === day).map((event) => <li key={event.id} className={`agenda-event ${event.id === current?.id ? 'is-current' : ''}`}>
       <div className="agenda-time">{timeLabel(event)}{event.id === current?.id && <span>Сейчас</span>}</div>
       <div className="agenda-event-body">

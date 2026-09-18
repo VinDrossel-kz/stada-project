@@ -7,16 +7,21 @@ export type AgendaEvent = {
 };
 export const eventDays = ['2026-09-21', '2026-09-22', '2026-09-23', '2026-09-24'];
 export const agendaTimezone = 'Asia/Almaty';
-export const scheduleNote = 'В карточках команд указаны 7 раундов до 14:30. В общей программе последний блок длится до 15:30. Расписание на 14:30–15:30 уточните у организаторов.';
 export function getAgenda(teamId?: number | null): AgendaEvent[] {
-  const general: AgendaEvent[] = data.general;
+  // Organizer clarification: the last hour is a final task for every team,
+  // separate from the seven station rounds in the original CSV cards.
+  const general: AgendaEvent[] = [
+    ...data.general.map((event) => event.date === '2026-09-23' && event.block && event.start === '14:00'
+      ? { ...event, end: '14:30', title: 'Основной блок 3 · заключительная станция' }
+      : event),
+    { id: 'final-task', date: '2026-09-23', start: '14:30', end: '15:30', allDay: false,
+      title: 'Финальное задание для всех команд', location: '' },
+  ].sort((a, b) => `${a.date}T${a.start}`.localeCompare(`${b.date}T${b.start}`));
   if (!teamId) return general;
   const rounds = data.personal.filter((event) => event.teamId === teamId);
   if (!rounds.length) return general;
   return [
     ...general.filter((event) => !event.block), ...rounds,
-    { id: 'unconfirmed-final-block', date: '2026-09-23', start: '14:30', end: '15:30', allDay: false,
-      title: 'Продолжение блока · уточняется', location: '', note: 'В индивидуальной карточке это время не расписано. Уточните программу и зал у организаторов.' },
   ].sort((a, b) => `${a.date}T${a.start}`.localeCompare(`${b.date}T${b.start}`));
 }
 // Conference time is UTC+5, independent of the device timezone.
