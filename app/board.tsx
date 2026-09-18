@@ -4,6 +4,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronDown, Compass, Flag, MapPin, Mountain, RefreshCw, Search, Trophy } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Header from './header';
+import ScoreMountain from './score-mountain';
 import { useParticipant } from './participant-context';
 import { initialTeams, Team } from './teams';
 import { games as initialGames, Game } from './games';
@@ -108,12 +109,12 @@ export default function Board() {
             return <Fragment key={team.id}><TableRow id={`team-${team.id}`} className={`${rank === 1 ? 'leading-row ' : ''}${selected ? 'own-team-row' : ''}`}>
               <TableCell className="rank"><span className={rank === 1 ? 'rank-number first' : 'rank-number'}>{rank === null ? '—' : String(rank).padStart(2, '0')}</span></TableCell>
               <TableCell><button type="button" className="team team-expand" aria-expanded={expanded} aria-controls={`team-games-${team.id}`} onClick={() => setExpandedTeamId(expanded ? null : team.id)}><span className={`team-icon tone-${team.id % 4}`}><Mountain size={22}/></span><span className="team-info"><strong>{team.name}</strong><span>КОМАНДА {String(team.id).padStart(2, '0')}</span></span><span className="team-statuses">{rank === 1 && <span className="leader-badge"><Trophy size={13}/>Лидер</span>}{selected && <span className="own-team-badge">Ваша команда</span>}</span><ChevronDown className={`team-chevron ${expanded ? 'is-open' : ''}`} size={18}/></button></TableCell>
-              <TableCell className="progress-cell"><div className="score-track"><div style={{ width: max > 0 ? `${Math.max(0, team.score) / max * 100}%` : '0%' }}/></div></TableCell>
-              <TableCell className="points"><strong>{!loaded ? '—' : team.score}</strong></TableCell>
+              <TableCell className="progress-cell"><ScoreMountain score={team.score} max={max} loaded={loaded}/></TableCell>
+              <TableCell className="points"><strong>{!loaded ? '—' : team.score}</strong><div className="mobile-mountain"><ScoreMountain score={team.score} max={max} loaded={loaded}/></div></TableCell>
             </TableRow>{expanded && <TableRow id={`team-games-${team.id}`} className={`team-details-row ${selected ? 'own-team-details' : ''}`}><TableCell colSpan={4}><div className="game-breakdown"><div className="game-breakdown-heading"><strong>Баллы по играм</strong><span>Итого: {team.score}</span></div><div className="game-score-grid">{games.map((game) => <div className="game-score-item" key={game.id}><span><small>{game.stage}</small>{game.name}</span><strong>{team.game_scores.find((entry) => entry.game_id === game.id)?.score ?? 0}</strong></div>)}</div></div></TableCell></TableRow>}</Fragment>;
           })}</TableBody>
         </Table>
-        <div className="board-footer"><span>При равном количестве баллов команды делят место.</span><span><RefreshCw size={12}/> Автообновление каждые 10 сек.</span></div>
+        <div className="board-footer"><span>Высота горы — баллы относительно лидера. При равенстве баллов команды делят место.</span><span><RefreshCw size={12}/> Автообновление каждые 10 сек.</span></div>
       </section>
     </main>
     <footer><span className="footer-brand">LET’S MAX STADA 2026 <span>/</span> ВЕРШИНА ЗОВЁТ</span><span>Боровое, Казахстан</span></footer>

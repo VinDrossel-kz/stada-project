@@ -193,6 +193,20 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d500
 @media(max-width:800px){.team-statuses{max-width:120px}.team .team-statuses>span{font-size:10px;padding:4px 7px}.selected-team-notice{padding-inline:20px}}
 @media(max-width:450px){.team-statuses{max-width:92px}.team .team-statuses>span{white-space:normal;text-align:center;line-height:1.15}.selected-team-notice{align-items:flex-start;flex-direction:column;gap:9px}}
 
+/* Score silhouettes share a baseline and animate vertically as results change. */
+.score-mountain{position:relative;width:100%;height:80px;--mountain-color:#1677c8;--mountain-dark:#00509e;--flag-color:#d50058}
+.mountain-guide{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:#c4d6e6;stroke-width:1;stroke-dasharray:3 4}
+.mountain-ground{stroke-dasharray:none}
+.mountain-shape{position:absolute;left:0;bottom:6px;width:100%;height:56px;transform:scaleY(var(--mountain-scale));transform-origin:center bottom;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.mountain-face{fill:var(--mountain-color)}.mountain-shadow{fill:var(--mountain-dark)}.mountain-snow{fill:#eef7ff}
+.mountain-flag{position:absolute;left:calc(50% - 2px);bottom:calc(6px + var(--summit-rise));height:19px;opacity:0;transition:bottom .8s cubic-bezier(.2,.7,.2,1),opacity .3s}
+.has-score .mountain-flag{opacity:1}.mountain-flag svg{overflow:visible}.mountain-flag path:first-child{fill:none;stroke:var(--mountain-dark);stroke-width:1.5}.mountain-flag path:last-child{fill:var(--flag-color)}
+.mountain-base{position:absolute;bottom:3px;left:calc(50% - 3px);width:6px;height:6px;border-radius:50%;background:#a6bdcf}.has-score .mountain-base{opacity:0}
+.leading-row .score-mountain{--mountain-color:#d6a52d;--mountain-dark:#a9790a;--flag-color:#a9790a}
+.own-team-row .score-mountain{--mountain-color:#dc538d;--mountain-dark:#ac275e;--flag-color:#d50058}
+.board .progress-cell{padding-top:7px;padding-bottom:7px}.mobile-mountain{display:none}
+@media(max-width:800px){.mobile-mountain{display:block;width:64px;margin:1px 0 0 auto;height:36px;overflow:hidden}.mobile-mountain .score-mountain{width:96px;transform:scale(.666667,.45);transform-origin:top left}.board .points{min-width:85px}.board .points strong{display:block;line-height:1.1}.board td{height:88px}}
+
 /* Per-game scoring and expandable team details. */
 .team-expand{width:100%;padding:0;border:0;background:transparent;text-align:left;color:inherit}
 .team-expand .team-info{display:block;flex:1}
