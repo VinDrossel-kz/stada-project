@@ -30,7 +30,7 @@ export default function ParticipantFinder({ open, onOpenChange, onSelect }: Prop
         <button className="finder-close" type="button" onClick={() => onOpenChange(false)} aria-label="Закрыть поиск"><X size={20}/></button>
         <span className="finder-icon"><UserRoundSearch size={26}/></span>
         <h2 id="finder-title">Найдите себя в списке</h2>
-        <p>Выберите своё имя — мы сразу покажем место и баллы вашей команды.</p>
+        <p>Выберите своё имя — мы покажем вашу команду, личную программу и куда идти сейчас.</p>
         <label className="finder-search">
           <span className="sr-only">Введите имя или фамилию</span>
           <Search size={19}/>
@@ -44,7 +44,7 @@ export default function ParticipantFinder({ open, onOpenChange, onSelect }: Prop
           ))}
           {matches.length === 0 && <div className="finder-empty">Ничего не найдено. Проверьте написание имени.</div>}
         </div>
-        <button className="finder-skip" type="button" onClick={() => onOpenChange(false)}>Перейти к общему рейтингу</button>
+        <button className="finder-skip" type="button" onClick={() => onOpenChange(false)}>Продолжить без выбора</button>
       </section>
     </div>
   );

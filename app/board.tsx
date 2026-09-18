@@ -4,29 +4,9 @@ import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronDown, Compass, Flag, MapPin, Mountain, RefreshCw, Search, Trophy } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Header from './header';
-import ParticipantFinder from './participant-finder';
-import { initialTeams, participants, Team } from './teams';
+import { useParticipant } from './participant-context';
+import { initialTeams, Team } from './teams';
 import { games as initialGames, Game } from './games';
-
-const PARTICIPANT_COOKIE = 'stada_participant';
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 180;
-
-function readSavedParticipant() {
-  const entry = document.cookie.split('; ').find((cookie) => cookie.startsWith(`${PARTICIPANT_COOKIE}=`));
-  if (!entry) return null;
-  try {
-    const saved = JSON.parse(decodeURIComponent(entry.slice(PARTICIPANT_COOKIE.length + 1))) as { name?: string; teamId?: number };
-    return participants.find((participant) => participant.name === saved.name && participant.teamId === saved.teamId) ?? null;
-  } catch {
-    return null;
-  }
-}
-
-function saveParticipant(teamId: number, name: string) {
-  const value = encodeURIComponent(JSON.stringify({ teamId, name }));
-  const secure = window.location.protocol === 'https:' ? '; Secure' : '';
-  document.cookie = `${PARTICIPANT_COOKIE}=${value}; Max-Age=${COOKIE_MAX_AGE}; Path=/; SameSite=Lax${secure}`;
-}
 
 export default function Board() {
   const [teams, setTeams] = useState<Team[]>(initialTeams);
@@ -34,9 +14,9 @@ export default function Board() {
   const [error, setError] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [finderOpen, setFinderOpen] = useState(false);
-  const [selectedTeamId, setSelectedTeamId] = useState<number | null>(null);
-  const [selectedParticipant, setSelectedParticipant] = useState('');
+  const { participant, openFinder } = useParticipant();
+  const selectedTeamId = participant?.teamId ?? null;
+  const selectedParticipant = participant?.name ?? '';
   const [games, setGames] = useState<Game[]>(initialGames);
   const [expandedTeamId, setExpandedTeamId] = useState<number | null>(null);
   const inFlight = useRef(false);
@@ -76,33 +56,13 @@ export default function Board() {
   }, [refresh]);
 
   useEffect(() => {
-    let scrollTimer: number | undefined;
-    const restoreTimer = window.setTimeout(() => {
-      const saved = readSavedParticipant();
-      if (!saved) {
-        setFinderOpen(true);
-        return;
-      }
-      setSelectedTeamId(saved.teamId);
-      setSelectedParticipant(saved.name);
-      setExpandedTeamId(saved.teamId);
-      scrollTimer = window.setTimeout(() => {
-        document.getElementById(`team-games-${saved.teamId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 350);
-    }, 0);
-    return () => { clearTimeout(restoreTimer); if (scrollTimer) clearTimeout(scrollTimer); };
-  }, []);
-
-  const showTeam = (teamId: number, participantName: string) => {
-    saveParticipant(teamId, participantName);
-    setFinderOpen(false);
-    setSelectedTeamId(teamId);
-    setSelectedParticipant(participantName);
-    setExpandedTeamId(teamId);
-    window.setTimeout(() => {
-      document.getElementById(`team-games-${teamId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 120);
-  };
+    if (!selectedTeamId) return;
+    const timer = window.setTimeout(() => setExpandedTeamId(selectedTeamId), 0);
+    const scrollTimer = window.setTimeout(() => {
+      document.getElementById(`team-games-${selectedTeamId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 350);
+    return () => { clearTimeout(timer); clearTimeout(scrollTimer); };
+  }, [selectedTeamId]);
 
   const sorted = [...teams].sort((a, b) => b.score - a.score || a.id - b.id);
   const started = teams.some((team) => team.score !== 0);
@@ -111,7 +71,6 @@ export default function Board() {
 
   return <>
     <Header/>
-    <ParticipantFinder open={finderOpen} onOpenChange={setFinderOpen} onSelect={showTeam}/>
     <main id="main-content" className="main leaderboard-main">
       <section className="expedition-cover" aria-labelledby="expedition-title">
         <img className="cover-photo" src="/images/expedition.jpg" alt="Путешественник перед горным хребтом"/>
@@ -133,11 +92,11 @@ export default function Board() {
         <div className="board-heading">
           <div className="board-title"><span className="section-index">01 /</span><div><h2>Рейтинг команд</h2><p>Каждый балл приближает к вершине</p></div></div>
           <div className="board-heading-actions">
-            <button className="find-me-button" type="button" onClick={() => setFinderOpen(true)}><Search size={15}/>{selectedParticipant ? 'Сменить участника' : 'Найти себя'}</button>
+            <button className="find-me-button" type="button" onClick={openFinder}><Search size={15}/>{selectedParticipant ? 'Сменить участника' : 'Найти себя'}</button>
             <button disabled={refreshing} aria-busy={refreshing} className={'refresh ' + (error ? 'error ' : '') + (refreshing ? 'is-refreshing' : '')} onClick={refresh} aria-label={status + '. Обновить результаты'}><RefreshCw size={14}/><span role="status" aria-live="polite">{refreshing ? 'Обновляем…' : status}</span></button>
           </div>
         </div>
-        {selectedParticipant && <div className="selected-team-notice" role="status"><span><strong>{selectedParticipant}</strong>, ваша команда сохранена на этом устройстве.</span><button type="button" onClick={() => setFinderOpen(true)}>Сменить</button></div>}
+        {selectedParticipant && <div className="selected-team-notice" role="status"><span><strong>{selectedParticipant}</strong>, ваша команда сохранена на этом устройстве.</span><button type="button" onClick={openFinder}>Сменить</button></div>}
         {error && loaded && <p className="connection-notice" role="status">Показываем последние загруженные баллы. Связь восстанавливается.</p>}
         <Table>
           <caption className="sr-only">Рейтинг 14 команд — места и количество баллов</caption>
