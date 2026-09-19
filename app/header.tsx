@@ -13,7 +13,7 @@ export default function Header({active='standings'}:{active?:string}) {
         <Link href="/teams" aria-current={active==='teams'?'page':undefined}><Users size={18}/>Участники</Link>
         <Link href="/agenda" aria-current={active==='agenda'?'page':undefined}><CalendarDays size={18}/>Программа</Link>
       </nav>
-      <a className="organizer" href="/admin" aria-label="Кабинет организатора"><LockKeyhole size={17}/><span>Организатор</span></a>
+      <Link className="organizer" href="/admin" aria-current={active === 'admin' ? 'page' : undefined} aria-label="Кабинет организатора"><LockKeyhole size={17}/><span>Организатор</span></Link>
     </header>
   </>;
 }

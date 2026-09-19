@@ -31,8 +31,8 @@ export default function LoginForm() {
 
   return <form className="organizer-login" onSubmit={submit}>
     <label htmlFor="organizer-password">Пароль организатора</label>
-    <input id="organizer-password" type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} required autoFocus />
+    <input id="organizer-password" type="password" autoComplete="current-password" value={password} onChange={(event) => { setPassword(event.target.value); setMessage(''); }} aria-invalid={Boolean(message)} aria-describedby={message ? 'login-error' : undefined} required />
     <button className="save-button" disabled={busy}>{busy ? 'Проверяем…' : 'Войти'}</button>
-    <p className="login-message" role="alert">{message}</p>
+    <p id="login-error" className="login-message" role="alert">{message}</p>
   </form>;
 }

@@ -24,7 +24,6 @@ export function ParticipantProvider({ children }: { children: React.ReactNode })
     const timer = window.setTimeout(() => {
       const saved = readSavedParticipant();
       setParticipant(saved); setReady(true);
-      if (!saved && window.location.pathname === '/') setOpen(true);
     }, 0);
     const restore = () => setParticipant(readSavedParticipant());
     const visible = () => { if (document.visibilityState === 'visible') restore(); };

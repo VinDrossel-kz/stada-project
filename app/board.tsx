@@ -59,10 +59,7 @@ export default function Board() {
   useEffect(() => {
     if (!selectedTeamId) return;
     const timer = window.setTimeout(() => setExpandedTeamId(selectedTeamId), 0);
-    const scrollTimer = window.setTimeout(() => {
-      document.getElementById(`team-games-${selectedTeamId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 350);
-    return () => { clearTimeout(timer); clearTimeout(scrollTimer); };
+    return () => clearTimeout(timer);
   }, [selectedTeamId]);
 
   const sorted = [...teams].sort((a, b) => b.score - a.score || a.id - b.id);
@@ -78,7 +75,7 @@ export default function Board() {
         <div className="cover-shade"/>
         <div className="cover-content">
           <p className="eyebrow"><span className="edition-line"/> LET’S MAX · STADA 2026</p>
-          <h1 id="expedition-title">ВЕРШИНА<br/><span>ЗОВЁТ.</span></h1>
+          <h1 id="expedition-title">ВЕРШИНА <span>ЗОВЁТ.</span></h1>
           <p className="cover-caption">14 команд на пути к общей вершине</p>
         </div>
         <div className="cover-location"><MapPin size={16}/><span>БОРОВОЕ<small>КАЗАХСТАН</small></span></div>
@@ -91,14 +88,17 @@ export default function Board() {
       </section>
       <section className="board">
         <div className="board-heading">
-          <div className="board-title"><span className="section-index">01 /</span><div><h2>Рейтинг команд</h2><p>Каждый балл приближает к вершине</p></div></div>
+          <div className="board-title"><span className="section-index"><Trophy size={22}/></span><div><h2>Рейтинг команд</h2><p>Нажмите на команду, чтобы увидеть баллы по играм</p></div></div>
           <div className="board-heading-actions">
             <button className="find-me-button" type="button" onClick={openFinder}><Search size={15}/>{selectedParticipant ? 'Сменить участника' : 'Найти себя'}</button>
-            <button disabled={refreshing} aria-busy={refreshing} className={'refresh ' + (error ? 'error ' : '') + (refreshing ? 'is-refreshing' : '')} onClick={refresh} aria-label={status + '. Обновить результаты'}><RefreshCw size={14}/><span role="status" aria-live="polite">{refreshing ? 'Обновляем…' : status}</span></button>
+            <button disabled={refreshing} aria-busy={refreshing} className={'refresh ' + (error ? 'error ' : '') + (refreshing ? 'is-refreshing' : '')} onClick={refresh} aria-label={status + '. Обновить результаты'}><RefreshCw size={14}/><span>{refreshing ? 'Обновляем…' : status}</span></button>
           </div>
         </div>
-        {selectedParticipant && <div className="selected-team-notice" role="status"><span><strong>{selectedParticipant}</strong>, ваша команда сохранена на этом устройстве.</span><button type="button" onClick={openFinder}>Сменить</button></div>}
-        {error && loaded && <p className="connection-notice" role="status">Показываем последние загруженные баллы. Связь восстанавливается.</p>}
+        {selectedParticipant && <div className="selected-team-notice"><span><strong>{selectedParticipant}</strong> · {participant?.teamName}</span><button type="button" onClick={() => {
+          setExpandedTeamId(selectedTeamId);
+          document.getElementById(`team-${selectedTeamId}`)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' });
+        }}>К моей команде</button></div>}
+        {error && <p className="connection-notice" role="status">{loaded ? 'Показываем последние загруженные баллы. Связь восстанавливается.' : 'Не удалось загрузить баллы. Проверьте соединение и нажмите «Повторить».'}</p>}
         <Table>
           <caption className="sr-only">Рейтинг 14 команд — места и количество баллов</caption>
           <TableHeader><TableRow><TableHead className="rank">МЕСТО</TableHead><TableHead>КОМАНДА</TableHead><TableHead className="progress-head">ПУТЬ К ВЕРШИНЕ</TableHead><TableHead className="points">БАЛЛЫ</TableHead></TableRow></TableHeader>
@@ -111,7 +111,7 @@ export default function Board() {
               <TableCell><button type="button" className="team team-expand" aria-expanded={expanded} aria-controls={`team-games-${team.id}`} onClick={() => setExpandedTeamId(expanded ? null : team.id)}><span className={`team-icon tone-${team.id % 4}`}><Mountain size={22}/></span><span className="team-info"><strong>{team.name}</strong><span>КОМАНДА {String(team.id).padStart(2, '0')}</span></span><span className="team-statuses">{rank === 1 && <span className="leader-badge"><Trophy size={13}/>Лидер</span>}{selected && <span className="own-team-badge">Ваша команда</span>}</span><ChevronDown className={`team-chevron ${expanded ? 'is-open' : ''}`} size={18}/></button></TableCell>
               <TableCell className="progress-cell"><ScoreMountain score={team.score} max={max} loaded={loaded}/></TableCell>
               <TableCell className="points"><strong>{!loaded ? '—' : team.score}</strong><div className="mobile-mountain"><ScoreMountain score={team.score} max={max} loaded={loaded}/></div></TableCell>
-            </TableRow>{expanded && <TableRow id={`team-games-${team.id}`} className={`team-details-row ${selected ? 'own-team-details' : ''}`}><TableCell colSpan={4}><div className="game-breakdown"><div className="game-breakdown-heading"><strong>Баллы по играм</strong><span>Итого: {team.score}</span></div><div className="game-score-grid">{games.map((game) => <div className="game-score-item" key={game.id}><span><small>{game.stage}</small>{game.name}</span><strong>{team.game_scores.find((entry) => entry.game_id === game.id)?.score ?? 0}</strong></div>)}</div></div></TableCell></TableRow>}</Fragment>;
+            </TableRow>{expanded && <TableRow id={`team-games-${team.id}`} className={`team-details-row ${selected ? 'own-team-details' : ''}`}><TableCell colSpan={4}><div className="game-breakdown"><div className="game-breakdown-heading"><strong>Баллы по играм</strong><span>Итого: {loaded ? team.score : '—'}</span></div><div className="game-score-grid">{games.map((game) => <div className="game-score-item" key={game.id}><span><small>{game.stage}</small>{game.name}</span><strong>{loaded ? (team.game_scores.find((entry) => entry.game_id === game.id)?.score ?? 0) : '—'}</strong></div>)}</div></div></TableCell></TableRow>}</Fragment>;
           })}</TableBody>
         </Table>
         <div className="board-footer"><span>Высота горы — баллы относительно лидера. При равенстве баллов команды делят место.</span><span><RefreshCw size={12}/> Автообновление каждые 10 сек.</span></div>
@@ -120,3 +120,4 @@ export default function Board() {
     <footer><span className="footer-brand">LET’S MAX STADA 2026 <span>/</span> ВЕРШИНА ЗОВЁТ</span><span>Боровое, Казахстан</span></footer>
   </>;
 }
+

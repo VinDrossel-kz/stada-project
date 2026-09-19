@@ -361,3 +361,236 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d500
   .board .team-details-row { display: block; }
   .board .team-details-row td { display: block; width: 100%; }
 }
+
+/* Shared responsive refinements: keep conference tasks close at hand. */
+:root { --background: #f2f6fb; --foreground: #18344e; }
+body { line-height: 1.5; }
+button, input { font-family: inherit; }
+button, a, input { -webkit-tap-highlight-color: transparent; }
+button:disabled { cursor: default; }
+.site-header { min-height: 92px; }
+.brand-logo { height: 76px; width: 110px; border-radius: 0 0 10px 10px; }
+.site-header nav { gap: 24px; }
+.site-header nav a { padding-inline: 6px; }
+.organizer[aria-current] { background: #e9f2fc; border-color: #005db9; }
+.main { padding-top: 28px; }
+.expedition-cover { min-height: 0; margin-bottom: 24px; border-radius: 18px; }
+.cover-content { padding: 28px 32px; }
+.cover-content h1 { font-size: clamp(32px, 3.4vw, 48px); letter-spacing: -1.5px; line-height: 1.12; }
+.cover-content .eyebrow { margin-bottom: 12px; font-size: 12px; }
+.cover-caption { font-size: 14px; }
+.cover-photo { object-position: center 48%; }
+.cover-shade { background: linear-gradient(90deg,#002957ed,#00356688 60%,#00356630); }
+.cover-location { top: 28px; right: 28px; }
+.cover-coordinate { display: none; }
+.stats > div { padding: 16px 26px; }
+.stats strong { font-size: 26px; }
+.leader-stat strong { font-size: 20px; }
+.board { border-radius: 16px; }
+.board-heading { padding: 22px 26px; flex-wrap: wrap; }
+.board-title { align-items: center; gap: 14px; }
+.section-index { display: grid; place-items: center; padding: 0; width: 44px; height: 44px; background: #eaf3fd; border-radius: 12px; color: #005db9; flex-shrink: 0; }
+.board-title h2 { font-size: 24px; }
+.board-heading p { font-size: 13px; }
+.find-me-button { font-size: 14px; min-height: 46px; }
+.refresh { font-size: 13px; margin-left: 0; }
+.board-heading-actions { gap: 10px; }
+.board .rank { width: 76px; }
+.board .progress-head, .board .progress-cell { width: 24%; padding-right: 28px !important; }
+.board .points { width: 115px; padding-right: 26px !important; }
+.board td { height: 88px; }
+.team-expand { min-height: 64px; border-radius: 8px; gap: 12px; padding: 6px 4px; }
+.team-expand:focus-visible { outline-offset: -2px; }
+.team-expand .team-info > span { font-size: 12px; letter-spacing: .5px; }
+.team .team-statuses > span { font-size: 12px; }
+.game-breakdown { padding: 20px 26px 24px 76px; }
+.game-score-item small { font-size: 12px; letter-spacing: .2px; }
+.game-score-item > span { font-size: 14px; }
+.selected-team-notice { padding: 12px 26px; flex-wrap: wrap; }
+.selected-team-notice button { min-height: 44px; font-size: 13px; }
+.board-footer { line-height: 1.65; gap: 24px; }
+.board-footer > span:last-child { flex-shrink: 0; }
+.teams-main, .agenda-main { padding-top: 38px; }
+.teams-intro { margin-bottom: 24px; }
+.teams-intro h1, .agenda-main h1 { font-size: clamp(30px, 3.3vw, 42px); font-weight: 750; line-height: 1.2; }
+.teams-intro > p:not(.eyebrow), .agenda-intro { font-size: 16px; }
+.teams-summary { margin-top: 16px; }
+.roster-toolbar { display: flex; gap: 12px; align-items: center; }
+.roster-search { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; border: 1px solid #b7cce0; border-radius: 10px; background: white; padding: 0 14px; color: #005db9; }
+.roster-search:focus-within { outline: 3px solid #005db928; border-color: #005db9; }
+.roster-search > svg { flex-shrink: 0; }
+.roster-search input { border: 0; outline: none; width: 100%; min-width: 0; height: 50px; font-size: 16px; color: #18344e; background: transparent; }
+.roster-search input:focus-visible { outline: none; }
+.roster-search button { display: grid; place-items: center; border: 0; background: none; color: #526d89; min-width: 44px; height: 44px; }
+.roster-result-count { font-size: 14px; color: #526d89; margin: 16px 0; }
+.roster-empty { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; background: #fff; border: 1px solid #dce6f0; border-radius: 14px; text-align: center; }
+.roster-empty > svg { color: #005db9; margin-bottom: 16px; }
+.roster-empty p { margin: 8px 0 20px; color: #526d89; }
+.roster-grid { align-items: start; gap: 24px; }
+.roster-card { box-shadow: none; }
+.roster-card header small { font-size: 12px; }
+.roster-card li { padding-block: 11px; }
+.roster-card li span { font-size: 15px; }
+.roster-card.is-own-team { border-color: #d50058; }
+.roster-card.is-own-team > header { background: #fff1f7; }
+.is-selected-member { background: #fff1f7; border-radius: 6px; }
+.is-selected-member small { display: inline-block; margin-left: 8px; font-size: 12px; font-weight: 700; color: #b00048; }
+.agenda-selection { margin: 24px 0; border-radius: 14px; }
+.agenda-selection > div, .agenda-selection > div > span { min-width: 0; }
+.agenda-selection strong { overflow-wrap: anywhere; }
+.agenda-days { margin: 24px 0; gap: 10px; }
+.agenda-days button { padding: 18px; transition: background .15s, border-color .15s; }
+.agenda-days button:hover:not([aria-pressed=true]) { background: #eaf3fd; border-color: #7caada; }
+.agenda-days button[aria-pressed=true] { box-shadow: inset 0 -4px #d50058; }
+.agenda-day-heading { margin-top: 28px; }
+.agenda-events { border-radius: 14px; }
+.agenda-event { grid-template-columns: 142px minmax(0,1fr); gap: 24px; }
+.agenda-event-body h3 { font-size: 18px; }
+.agenda-event-body p { font-size: 15px; }
+.agenda-details li { font-size: 15px; }
+.agenda-inline-button { min-height: 44px; }
+.agenda-now { border-top-width: 2px; padding: 12px 28px calc(12px + env(safe-area-inset-bottom)); }
+.agenda-now-inner { grid-template-columns: minmax(180px,1fr) minmax(0,2.4fr) auto; gap: 24px; max-width: 1200px; }
+.agenda-person { min-height: 48px; border-radius: 6px; }
+.agenda-person:hover { background: #ffffff0b; }
+.agenda-person > span { min-width: 0; }
+.agenda-person strong { overflow-wrap: anywhere; }
+.agenda-now-event > strong { font-size: 15px; }
+.agenda-now-link { min-height: 44px; }
+.finder-dialog > .finder-count { font-size: 12px; margin: 12px 0 0; color: #526d89; }
+.finder-results { margin-top: 8px; overscroll-behavior: contain; }
+.finder-results button { min-height: 58px; }
+.finder-close { width: 44px; height: 44px; }
+.finder-results button:focus-visible { outline-offset: -3px; }
+.finder-skip { min-height: 44px; }
+.admin-panel h1 { font-size: clamp(30px,4vw,42px); color: #005db9; }
+.admin-toolbar { font-size: 15px; line-height: 1.65; }
+.admin-team-card > summary { list-style: none; }
+.admin-team-card > summary::before { content: '+'; font-size: 24px; color: #005db9; }
+.admin-team-card[open] > summary::before { content: '−'; }
+.admin-team-card summary:focus-visible { outline: 3px solid #d50058; outline-offset: -3px; }
+.admin-team-card > summary small, .admin-game-row label small { font-size: 12px; }
+.admin-message:not(:empty) { margin: 16px 24px; padding: 12px 16px; border-radius: 8px; background: #edf4fb; line-height: 1.6; }
+.organizer-login input, .save-button { min-height: 46px; }
+.organizer-login input[aria-invalid=true] { border-color: #b3283b; }
+@media (max-width: 1050px) and (min-width: 801px) {
+  .site-header { gap: 16px; }
+  .site-header nav { gap: 14px; }
+  .board-heading-actions { width: 100%; justify-content: flex-end; }
+}
+@media (max-width: 800px) {
+  .site-header { min-height: 0; padding-inline: 18px; gap: 4px 12px; }
+  .brand-logo { height: 62px; width: 88px; }
+  .brand-caption { font-size: 12px; max-width: 190px; }
+  .brand-caption small { font-size: 12px; }
+  .site-header nav { gap: 6px; }
+  .site-header nav a { min-height: 48px; padding: 10px 2px; font-size: 13px; flex-direction: row; }
+  .site-header nav a[aria-current] { background: #f0f6fd; border-radius: 8px 8px 0 0; }
+  .main { padding: 20px 18px 32px; }
+  .cover-content { padding: 22px 24px; }
+  .cover-content h1 { font-size: 34px; max-width: 440px; }
+  .cover-caption { max-width: none; font-size: 14px; }
+  .cover-location { display: none; }
+  .stats > div { padding: 12px 18px; }
+  .stats .leader-stat { padding: 10px 18px; }
+  .stats .leader-stat .stat-label { max-width: none; }
+  .stats strong { font-size: 24px; }
+  .leader-stat strong { font-size: 17px; }
+  .board-heading { gap: 14px; padding: 20px; }
+  .board-title h2 { font-size: 23px; }
+  .board-heading-actions { display: flex; flex-wrap: wrap; margin: 0; width: 100%; }
+  .board-heading-actions > button { flex: 1 1 auto; }
+  .board-heading-actions .refresh { border: 1px solid #dce6f0; margin: 0; }
+  .board tr { grid-template-columns: 44px minmax(0,1fr) 86px; }
+  .board .rank { width: auto; }
+  .board .points { width: auto; padding-right: 12px !important; }
+  .board td { height: auto; min-height: 90px; }
+  .team-expand { flex-wrap: wrap; gap: 4px; padding-block: 12px; }
+  .team-expand .team-info { flex-basis: calc(100% - 24px); }
+  .team-expand .team-chevron { order: 2; }
+  .team-expand .team-statuses { display: flex; order: 3; margin-left: 0; max-width: none; width: 100%; justify-content: flex-start; gap: 4px; }
+  .team-expand .team-statuses:empty { display: none; }
+  .team .team-statuses > span { font-size: 12px; padding: 2px 7px; white-space: normal; }
+  .team-info strong { overflow-wrap: normal; }
+  .board .team strong { font-size: 15px; }
+  .game-breakdown { padding: 18px 14px; }
+  .selected-team-notice { padding: 12px 16px; flex-direction: row; align-items: center; }
+  .board-footer { padding: 16px; gap: 8px; }
+  .board-footer > span:last-child { flex-shrink: 1; }
+  .agenda-days button { padding: 16px; }
+  .agenda-selection { gap: 16px; }
+  .agenda-now { padding: 6px 16px calc(6px + env(safe-area-inset-bottom)); }
+  .agenda-now-inner { grid-template-columns: minmax(0,1fr) auto; gap: 0 12px; }
+  .agenda-now-toggle { font-size: 13px; min-height: 40px; }
+  .agenda-now-link { font-size: 13px; }
+  .agenda-now-event > strong { font-size: 15px; }
+  .roster-grid { gap: 16px; }
+  .roster-card li span { font-size: 15px; }
+}
+@media (max-width: 520px) {
+  .site-header { padding-inline: 12px; }
+  .brand { gap: 12px; }
+  .brand-caption { font-size: 12px; max-width: 165px; }
+  .brand-caption small { font-size: 12px; }
+  .site-header nav a { gap: 5px; font-size: 12px; }
+  .site-header nav svg { width: 16px; }
+  .organizer { min-width: 44px; }
+  .main { padding: 16px 12px 28px; }
+  .expedition-cover { border-radius: 12px; margin-bottom: 16px; }
+  .cover-content { padding: 18px; }
+  .cover-content .eyebrow { font-size: 12px; letter-spacing: .8px; margin-bottom: 10px; }
+  .cover-content h1 { font-size: clamp(25px,7.1vw,36px); letter-spacing: -.9px; margin-bottom: 10px; }
+  .cover-caption { font-size: 13px; }
+  .stats > div { padding: 10px 14px; }
+  .stats .stat-symbol { display: none; }
+  .stat-label { font-size: 12px; letter-spacing: 0; }
+  .stats strong { font-size: 22px; }
+  .stats small { font-size: 12px; }
+  .stats .leader-stat { padding: 9px 14px; }
+  .stats .leader-stat > div { gap: 4px 12px; }
+  .stats .leader-stat .stat-label { font-size: 12px; }
+  .leader-stat strong { font-size: 15px; }
+  .board-heading { padding: 16px 14px; gap: 12px; }
+  .board-title { gap: 10px; }
+  .section-index { width: 38px; height: 38px; }
+  .board-title h2 { font-size: 21px; }
+  .board-heading p { font-size: 12px; line-height: 1.5; }
+  .board-heading-actions { gap: 8px; }
+  .board-heading-actions .find-me-button { font-size: 13px; padding: 9px 10px; }
+  .board-heading-actions .refresh { font-size: 12px; padding: 9px 8px; }
+  .board th { font-size: 12px; letter-spacing: 0; }
+  .board tr { grid-template-columns: 42px minmax(0,1fr) 78px; }
+  .board .points strong { font-size: 23px; }
+  .team-expand .team-info > span { font-size: 12px; }
+  .agenda-main h1, .teams-intro h1 { font-size: 30px; }
+  .agenda-main > .eyebrow, .teams-intro .eyebrow { font-size: 12px; letter-spacing: 1px; }
+  .agenda-intro, .teams-intro > p:not(.eyebrow) { font-size: 15px; }
+  .agenda-days { gap: 8px; }
+  .agenda-days button { padding: 13px; }
+  .agenda-days button strong { font-size: 17px; }
+  .agenda-days button small, .agenda-days button span { font-size: 12px; letter-spacing: 0; }
+  .agenda-event { grid-template-columns: 1fr; padding: 18px 16px; gap: 12px; }
+  .agenda-event-body h3 { font-size: 17px; }
+  .agenda-time { font-size: 15px; }
+  .agenda-selection { align-items: stretch; flex-direction: column; padding: 16px; }
+  .agenda-selection small { line-height: 1.6; }
+  .agenda-selection .find-me-button { width: 100%; justify-content: center; }
+  .agenda-view button { font-size: 14px; }
+  .roster-toolbar { flex-wrap: wrap; }
+  .roster-search { flex-basis: 100%; }
+  .roster-toolbar > .find-me-button { width: 100%; justify-content: center; }
+  .roster-card h2 { font-size: 22px; }
+  .organizer-login { grid-template-columns: 1fr; }
+  .organizer-login .save-button { width: 100%; }
+  footer { margin-inline: 16px; }
+}
+@media (max-width: 360px) {
+  .brand-caption { max-width: 125px; }
+  .brand-logo { width: 76px; }
+  .site-header nav a { flex-direction: column; gap: 3px; }
+  .section-index { display: none; }
+}
+.board tr { border-color: #e4ebf2; }
+@media (max-width: 520px) {
+  .site-header nav a { flex-direction: column; gap: 3px; }
+}
