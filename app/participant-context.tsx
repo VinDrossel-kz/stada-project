@@ -10,6 +10,7 @@ function readSavedParticipant() {
   if (!entry) return null;
   try {
     const saved = JSON.parse(decodeURIComponent(entry.slice(cookieName.length + 1)));
+    if (saved.teamId === 8 && saved.name === 'Камила Акпенбет') saved.name = 'Камилла Акпанбет';
     return participants.find((person) => person.name === saved.name && person.teamId === saved.teamId) ?? null;
   } catch { return null; }
 }
