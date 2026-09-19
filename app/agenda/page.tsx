@@ -36,6 +36,7 @@ export default function Agenda() {
         {event.opponentId && <p className="agenda-opponent"><Users size={16}/>Соперник: команда {event.opponentId} · {teamRosters.find((team) => team.id === event.opponentId)?.name}</p>}
         {event.lead && <p className="agenda-lead">Лидирует: {event.lead.replaceAll('\n', ', ')}</p>}
         {event.note && <p className="agenda-note-inline">{event.note}</p>}
+        {event.details && <ol className="agenda-details" aria-label="Подробная программа тренинга">{event.details.map((detail) => <li key={detail.start}><span className="agenda-detail-time">{detail.start}–{detail.end}</span><div>{detail.title}{detail.lead && <small>Лидирует: {detail.lead}</small>}</div></li>)}</ol>}
         {event.block && !personal && <button className="agenda-inline-button" type="button" onClick={() => { if (participant) setView('personal'); else openFinder(); }}>Показать мой маршрут</button>}
       </div>
     </li>)}</ol>
