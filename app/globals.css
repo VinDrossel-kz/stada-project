@@ -241,3 +241,118 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #d500
 .admin-game-row input{width:100%;padding:10px;border:1px solid #c8d6e2;border-radius:7px;background:#fbfdff;color:#18344e;font-size:16px;font-variant-numeric:tabular-nums}
 @media(max-width:800px){.game-breakdown{padding:18px 20px}.game-score-grid{grid-template-columns:1fr}.admin-scoreboard-heading{align-items:flex-start;padding:20px;flex-wrap:wrap}.admin-team-list{padding:8px}.admin-game-row{grid-template-columns:1fr 78px 98px;padding:11px 13px;gap:8px}.admin-game-row .save-button{padding-inline:9px}.admin-toolbar{align-items:flex-start}}
 @media(max-width:520px){.team-statuses{display:none}.game-breakdown-heading{align-items:flex-start;flex-direction:column;gap:4px}.game-score-item{padding:9px 11px}.admin-game-row{grid-template-columns:1fr 76px}.admin-game-row label{grid-column:1/-1}.admin-game-row .save-button{min-height:42px}.admin-team-card>summary{padding:14px}.admin-total{gap:5px}.admin-total small{display:none}}
+
+/* Phone layouts: readable names, thumb-sized controls, and a compact route dock. */
+.agenda-now-toggle { display: none; }
+@media (max-width: 800px) {
+  .site-header { column-gap: 8px; }
+  .site-header nav { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 4px; }
+  .site-header nav a { justify-content: center; gap: 6px; font-size: 13px; min-width: 0; }
+  .site-header nav svg { flex-shrink: 0; width: 17px; }
+  .board-heading-actions { margin-left: 0; gap: 8px; }
+  .board-heading-actions > button { justify-content: center; flex: 1; }
+  .board table { table-layout: fixed; }
+  .board th, .board td { white-space: normal; }
+  .board .rank { width: 44px; padding-inline: 4px; }
+  .board .points { width: 80px; min-width: 0; padding-right: 12px !important; }
+  .team-expand { min-height: 64px; gap: 8px; }
+  .team-expand .team-icon { display: none; }
+  .team-info strong { overflow-wrap: anywhere; line-height: 1.35; }
+  .team-statuses { display: none; }
+  .team-chevron { margin-left: 0; width: 16px; }
+  .game-score-item { white-space: normal; }
+  .game-breakdown { padding: 16px 12px; }
+  .selected-team-notice { padding: 14px 16px; font-size: 13px; line-height: 1.5; }
+  .selected-team-notice button { min-height: 44px; }
+  .agenda-now { padding: 8px 14px calc(8px + env(safe-area-inset-bottom)); max-height: 50dvh; overflow-y: auto; }
+  .agenda-now-inner { grid-template-columns: minmax(0,1fr) auto; gap: 4px 10px; }
+  .agenda-person { min-height: 44px; }
+  .agenda-person > span { min-width: 0; }
+  .agenda-person strong, .agenda-person small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .agenda-now-link { min-height: 44px; padding: 8px 10px; font-size: 12px; }
+  .agenda-now-toggle { display: flex; grid-column: 1/-1; grid-row: 2; gap: 8px; align-items: center; justify-content: space-between; min-height: 44px; padding: 8px 0; border: 0; border-top: 1px solid #ffffff25; background: none; color: #cbe5fa; text-align: left; font-size: 13px; }
+  .agenda-now-toggle span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .agenda-now-toggle svg { flex-shrink: 0; }
+  .agenda-now.is-expanded .agenda-now-toggle svg { transform: rotate(180deg); }
+  .agenda-now .agenda-now-event { display: none; grid-row: 3; padding: 4px 0 8px; }
+  .agenda-now.is-expanded .agenda-now-event { display: flex; }
+  .finder-overlay { padding: 12px; }
+  .finder-dialog { max-height: calc(100dvh - 24px); padding: 20px 16px 12px; }
+  .finder-dialog h2 { font-size: 23px; margin-top: 10px; }
+  .finder-dialog > p { margin: 0 0 14px; font-size: 13px; }
+  .finder-icon { width: 40px; height: 40px; flex-shrink: 0; }
+  .finder-close { width: 44px; height: 44px; }
+  .finder-search { flex-shrink: 0; }
+  .finder-search input { min-width: 0; font-size: 16px; }
+  .finder-results { flex: 1 1 auto; min-height: 60px; max-height: none; overscroll-behavior: contain; }
+  .finder-results button { min-height: 62px; }
+  .finder-skip { min-height: 44px; margin-top: 8px; flex-shrink: 0; }
+}
+@media (max-width: 520px) {
+  .main { padding: 20px 12px 28px; }
+  .site-header { padding-inline: 12px; }
+  .brand { gap: 10px; }
+  .brand-logo { width: 84px; height: 62px; }
+  .brand-caption { font-size: 11px; max-width: 135px; }
+  .brand-caption small { font-size: 10px; }
+  .organizer { min-width: 44px; padding: 10px; }
+  .organizer span { display: none; }
+  .cover-content { padding: 24px 20px; }
+  .cover-content h1 { font-size: 42px; }
+  .cover-caption { max-width: none; font-size: 13px; }
+  .cover-location { display: none; }
+  .cover-content .eyebrow { font-size: 10px; letter-spacing: 1.3px; }
+  .stats > div { padding: 12px; gap: 8px; }
+  .stats .stat-symbol { display: none; }
+  .stats strong { font-size: 23px; }
+  .stats .leader-stat { padding: 12px; }
+  .stats .leader-stat > div { gap: 8px; }
+  .leader-stat strong { font-size: 17px; }
+  .stat-label { font-size: 10px; letter-spacing: .5px; }
+  .board-heading { padding: 18px 14px; }
+  .section-index { display: none; }
+  .board-title h2 { font-size: 22px; }
+  .board-heading p { font-size: 12px; }
+  .board-heading-actions { display: grid; grid-template-columns: 1fr; }
+  .board-heading-actions .refresh { border: 0; min-height: 44px; padding: 8px; }
+  .board-heading-actions .find-me-button { font-size: 14px; }
+  .board th { font-size: 10px; letter-spacing: .5px; }
+  .board .team strong { font-size: 14px; }
+  .board-footer { padding: 16px 14px; line-height: 1.6; }
+  .agenda-main h1, .teams-intro h1 { font-size: 30px; line-height: 1.15; letter-spacing: -1px; }
+  .agenda-intro, .teams-intro > p:not(.eyebrow) { font-size: 14px; }
+  .agenda-selection { margin: 20px 0; padding: 16px; }
+  .agenda-selection strong { font-size: 16px; }
+  .agenda-selection .find-me-button { width: 100%; justify-content: center; font-size: 14px; }
+  .agenda-days { gap: 8px; margin: 20px 0 24px; }
+  .agenda-days button { padding: 12px; }
+  .agenda-days button strong { font-size: 16px; }
+  .agenda-event { padding: 16px; }
+  .agenda-event-body h3 { font-size: 16px; }
+  .agenda-view { display: grid; grid-template-columns: 1fr 1fr; }
+  .agenda-view button { padding: 10px 8px; font-size: 13px; min-height: 44px; }
+  .roster-card > header { padding: 16px; }
+  .roster-card li { padding-block: 11px; }
+  .teams-summary { flex-wrap: wrap; font-size: 13px; }
+  .notice { padding: 20px 16px; }
+  .admin-toolbar { flex-wrap: wrap; }
+}
+@media (max-width: 520px) {
+  .site-header nav a { flex-direction: column; gap: 4px; padding: 10px 0; font-size: 11px; text-align: center; }
+  .site-header nav { grid-template-columns: repeat(3,minmax(0,1fr)); }
+}
+@media (max-width: 360px) {
+  .brand-caption { max-width: 110px; font-size: 10px; }
+  .brand-caption small { font-size: 9px; }
+  .brand-logo { width: 76px; }
+}
+@media (max-width: 800px) {
+  .board table, .board thead, .board tbody { display: block; }
+  .board tr { display: grid; grid-template-columns: 44px minmax(0,1fr) 80px; align-items: stretch; }
+  .board th, .board td { display: flex; align-items: center; min-width: 0; }
+  .board .rank { justify-content: center; }
+  .board .points { flex-direction: column; align-items: flex-end; justify-content: center; }
+  .board .progress-head, .board .progress-cell { display: none; }
+  .board .team-details-row { display: block; }
+  .board .team-details-row td { display: block; width: 100%; }
+}
