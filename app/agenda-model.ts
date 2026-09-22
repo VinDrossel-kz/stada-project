@@ -9,15 +9,8 @@ export type AgendaEvent = {
 export const eventDays = ['2026-09-21', '2026-09-22', '2026-09-23', '2026-09-24'];
 export const agendaTimezone = 'Asia/Almaty';
 export function getAgenda(teamId?: number | null): AgendaEvent[] {
-  // Organizer clarification: the last hour is a final task for every team,
-  // separate from the seven station rounds in the original CSV cards.
-  const general: AgendaEvent[] = [
-    ...data.general.map((event) => event.date === '2026-09-23' && event.block && event.start === '14:00'
-      ? { ...event, end: '14:30', title: 'Основной блок 3 · заключительная станция' }
-      : event),
-    { id: 'final-task', date: '2026-09-23', start: '14:30', end: '15:30', allDay: false,
-      title: 'Финальное задание для всех команд', location: '' },
-  ].sort((a, b) => `${a.date}T${a.start}`.localeCompare(`${b.date}T${b.start}`));
+  const general: AgendaEvent[] = [...data.general]
+    .sort((a, b) => `${a.date}T${a.start}`.localeCompare(`${b.date}T${b.start}`));
   if (!teamId) return general;
   const rounds = data.personal.filter((event) => event.teamId === teamId);
   if (!rounds.length) return general;
