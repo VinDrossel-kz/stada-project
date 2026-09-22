@@ -11,10 +11,8 @@ import { games as initialGames, Game } from './games';
 
 export default function Board() {
   const [teams, setTeams] = useState<Team[]>(initialTeams);
-  const [status, setStatus] = useState('Загружаем результаты');
   const [error, setError] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
   const { participant, openFinder } = useParticipant();
   const selectedTeamId = participant?.teamId ?? null;
   const selectedParticipant = participant?.name ?? '';
@@ -25,7 +23,6 @@ export default function Board() {
   const refresh = useCallback(async () => {
     if (inFlight.current) return;
     inFlight.current = true;
-    setRefreshing(true);
     try {
       const response = await fetch('/api/scores', { cache: 'no-store', signal: AbortSignal.timeout(15000) });
       if (!response.ok) throw Error();
@@ -38,13 +35,10 @@ export default function Board() {
       setGames(data.games);
       setLoaded(true);
       setError(false);
-      setStatus('Обновлено в ' + new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }));
     } catch {
       setError(true);
-      setStatus('Нет связи · повторить');
     } finally {
       inFlight.current = false;
-      setRefreshing(false);
     }
   }, []);
 
@@ -91,14 +85,9 @@ export default function Board() {
           <div className="board-title"><span className="section-index"><Trophy size={22}/></span><div><h2>Рейтинг команд</h2><p>Нажмите на команду, чтобы увидеть баллы по играм</p></div></div>
           <div className="board-heading-actions">
             <button className="find-me-button" type="button" onClick={openFinder}><Search size={15}/>{selectedParticipant ? 'Сменить участника' : 'Найти себя'}</button>
-            <button disabled={refreshing} aria-busy={refreshing} className={'refresh ' + (error ? 'error ' : '') + (refreshing ? 'is-refreshing' : '')} onClick={refresh} aria-label={status + '. Обновить результаты'}><RefreshCw size={14}/><span>{refreshing ? 'Обновляем…' : status}</span></button>
           </div>
         </div>
-        {selectedParticipant && <div className="selected-team-notice"><span><strong>{selectedParticipant}</strong> · {participant?.teamName}</span><button type="button" onClick={() => {
-          setExpandedTeamId(selectedTeamId);
-          document.getElementById(`team-${selectedTeamId}`)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' });
-        }}>К моей команде</button></div>}
-        {error && <p className="connection-notice" role="status">{loaded ? 'Показываем последние загруженные баллы. Связь восстанавливается.' : 'Не удалось загрузить баллы. Проверьте соединение и нажмите «Повторить».'}</p>}
+        {error && <div className="connection-notice" role="status"><span>{loaded ? 'Показываем последние загруженные баллы. Связь восстанавливается.' : 'Не удалось загрузить баллы. Проверьте соединение.'}</span><button type="button" onClick={refresh}><RefreshCw size={14}/>Повторить</button></div>}
         <Table>
           <caption className="sr-only">Рейтинг 14 команд — места и количество баллов</caption>
           <TableHeader><TableRow><TableHead className="rank">МЕСТО</TableHead><TableHead>КОМАНДА</TableHead><TableHead className="progress-head">ПУТЬ К ВЕРШИНЕ</TableHead><TableHead className="points">БАЛЛЫ</TableHead></TableRow></TableHeader>
@@ -114,7 +103,7 @@ export default function Board() {
             </TableRow>{expanded && <TableRow id={`team-games-${team.id}`} className={`team-details-row ${selected ? 'own-team-details' : ''}`}><TableCell colSpan={4}><div className="game-breakdown"><div className="game-breakdown-heading"><strong>Баллы по играм</strong><span>Итого: {loaded ? team.score : '—'}</span></div><div className="game-score-grid">{games.map((game) => <div className="game-score-item" key={game.id}><span><small>{game.stage}</small>{game.name}</span><strong>{loaded ? (team.game_scores.find((entry) => entry.game_id === game.id)?.score ?? 0) : '—'}</strong></div>)}</div></div></TableCell></TableRow>}</Fragment>;
           })}</TableBody>
         </Table>
-        <div className="board-footer"><span>Высота горы — баллы относительно лидера. При равенстве баллов команды делят место.</span><span><RefreshCw size={12}/> Автообновление каждые 10 сек.</span></div>
+        <div className="board-footer"><span>Высота горы — баллы относительно лидера. При равенстве баллов команды делят место.</span></div>
       </section>
     </main>
     <footer><span className="footer-brand">LET’S MAX STADA 2026 <span>/</span> ВЕРШИНА ЗОВЁТ</span><span>Боровое, Казахстан</span></footer>
