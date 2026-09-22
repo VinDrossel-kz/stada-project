@@ -24,7 +24,9 @@ export function ParticipantProvider({ children }: { children: React.ReactNode })
   useEffect(() => {
     const timer = window.setTimeout(() => {
       const saved = readSavedParticipant();
-      setParticipant(saved); setReady(true);
+      setParticipant(saved);
+      setOpen(!saved);
+      setReady(true);
     }, 0);
     const restore = () => setParticipant(readSavedParticipant());
     const visible = () => { if (document.visibilityState === 'visible') restore(); };
