@@ -613,6 +613,9 @@ button:disabled { cursor: default; }
   .section-index { display: none; }
 }
 .board tr { border-color: #e4ebf2; }
+@media (max-width: 800px) {
+  .site-header nav { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%; overflow: visible; gap: 4px; }
+}
 @media (max-width: 520px) {
-  .site-header nav a { flex-direction: column; gap: 3px; }
+  .site-header nav a { flex-direction: column; justify-content: center; gap: 3px; min-width: 0; padding-inline: 1px; font-size: 11px; white-space: nowrap; }
 }
