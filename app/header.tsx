@@ -9,7 +9,7 @@ export default function Header({active='standings'}:{active?:string}) {
         <span className="brand-caption">Цикловая конференция<small>Боровое · Казахстан</small></span>
       </Link>
       <nav aria-label="Главное меню">
-        <Link href="/" aria-current={active==='standings'?'page':undefined}><Trophy size={18}/>Рейтинг команд</Link>
+        <Link href="/" aria-current={active==='standings'?'page':undefined}><Trophy size={18}/>Рейтинг</Link>
         <Link href="/teams" aria-current={active==='teams'?'page':undefined}><Users size={18}/>Участники</Link>
         <Link href="/agenda" aria-current={active==='agenda'?'page':undefined}><CalendarDays size={18}/>Программа</Link>
         <Link href="/briefing" aria-current={active==='briefing'?'page':undefined}><ShieldCheck size={18}/>Инструктаж</Link>
