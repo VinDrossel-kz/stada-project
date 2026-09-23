@@ -10,7 +10,10 @@ function readSavedParticipant() {
   if (!entry) return null;
   try {
     const saved = JSON.parse(decodeURIComponent(entry.slice(cookieName.length + 1)));
-    return participants.find((person) => person.name === saved.name && person.teamId === saved.teamId) ?? null;
+    const savedName = saved.name === 'Карлыгаш Кыйлажева' ? 'Кыйлажева Карлыгаш' : saved.name;
+    return participants.find((person) => person.name === savedName && person.teamId === saved.teamId)
+      ?? participants.find((person) => person.name === savedName)
+      ?? null;
   } catch { return null; }
 }
 const ParticipantContext = createContext<{
