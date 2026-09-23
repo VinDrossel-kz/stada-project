@@ -8,11 +8,14 @@ type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSelect: (teamId: number, participantName: string) => void;
+  selectedParticipantName?: string;
+  onSkip: () => void;
+  onClear: () => void;
 };
 
 const normalize = (value: string) => value.toLocaleLowerCase('ru-RU').replaceAll('ё', 'е').trim();
 
-export default function ParticipantFinder({ open, onOpenChange, onSelect }: Props) {
+export default function ParticipantFinder({ open, onOpenChange, onSelect, selectedParticipantName, onSkip, onClear }: Props) {
   const [query, setQuery] = useState('');
   const dialogRef = useRef<HTMLElement>(null);
   useEffect(() => {
@@ -72,7 +75,9 @@ export default function ParticipantFinder({ open, onOpenChange, onSelect }: Prop
           ))}
           {matches.length === 0 && <div className="finder-empty">Ничего не найдено. Проверьте написание имени.</div>}
         </div>
-        <button className="finder-skip" type="button" onClick={() => onOpenChange(false)}>Продолжить без выбора</button>
+        <button className="finder-skip" type="button" onClick={selectedParticipantName ? onClear : onSkip}>
+          {selectedParticipantName ? 'Убрать выбор участника' : 'Продолжить без выбора'}
+        </button>
       </section>
     </div>
   );

@@ -5,6 +5,18 @@ import ParticipantFinder from './participant-finder';
 import { participants } from './teams';
 type Participant = (typeof participants)[number];
 const cookieName = 'stada_participant';
+const skippedCookieName = 'stada_participant_skipped';
+function hasSkippedParticipant() {
+  return document.cookie.split('; ').some((cookie) => cookie.startsWith(`${skippedCookieName}=`));
+}
+function expireCookie(name: string) {
+  const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+  document.cookie = `${name}=; Max-Age=0; Path=/; SameSite=Lax${secure}`;
+}
+function rememberSkippedParticipant() {
+  const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+  document.cookie = `${skippedCookieName}=1; Max-Age=${60 * 60 * 24 * 180}; Path=/; SameSite=Lax${secure}`;
+}
 function readSavedParticipant() {
   const entry = document.cookie.split('; ').find((cookie) => cookie.startsWith(`${cookieName}=`));
   if (!entry) return null;
@@ -27,7 +39,7 @@ export function ParticipantProvider({ children }: { children: React.ReactNode })
     const timer = window.setTimeout(() => {
       const saved = readSavedParticipant();
       setParticipant(saved);
-      setOpen(!saved);
+      setOpen(!saved && !hasSkippedParticipant());
       setReady(true);
     }, 0);
     const restore = () => setParticipant(readSavedParticipant());
@@ -38,11 +50,23 @@ export function ParticipantProvider({ children }: { children: React.ReactNode })
   }, []);
   return <ParticipantContext.Provider value={{ participant, ready, openFinder: () => setOpen(true) }}>
     {children}
-    <ParticipantFinder open={open} onOpenChange={setOpen} onSelect={(teamId, name) => {
+    <ParticipantFinder
+      open={open}
+      onOpenChange={setOpen}
+      selectedParticipantName={participant?.name}
+      onSkip={() => { rememberSkippedParticipant(); setOpen(false); }}
+      onClear={() => {
+        expireCookie(cookieName);
+        rememberSkippedParticipant();
+        setParticipant(null);
+        setOpen(false);
+      }}
+      onSelect={(teamId, name) => {
       const person = participants.find((entry) => entry.teamId === teamId && entry.name === name);
       if (!person) return;
       const secure = window.location.protocol === 'https:' ? '; Secure' : '';
       document.cookie = `${cookieName}=${encodeURIComponent(JSON.stringify({ teamId, name }))}; Max-Age=${60 * 60 * 24 * 180}; Path=/; SameSite=Lax${secure}`;
+      expireCookie(skippedCookieName);
       setParticipant(person); setOpen(false);
     }}/>
   </ParticipantContext.Provider>;
