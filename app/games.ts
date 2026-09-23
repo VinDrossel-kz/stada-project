@@ -8,5 +8,6 @@ export const games: Game[] = [
   { id: 5, stage: 'THE STORM', name: 'Ситуации на карточках / КВН' },
   { id: 6, stage: 'FINAL RIDGE', name: 'Танцевальный баттл' },
   { id: 7, stage: 'КАМНЕПАД', name: 'Расставь в правильном порядке' },
-  { id: 8, stage: '★', name: 'SUMMIT' },
+  { id: 8, stage: '★', name: 'SUMMIT Бриф' },
+  { id: 9, stage: '★', name: 'SUMMIT Видео' },
 ];
