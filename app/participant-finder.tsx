@@ -60,11 +60,11 @@ export default function ParticipantFinder({ open, onOpenChange, onSelect, select
         <button className="finder-close" type="button" onClick={() => onOpenChange(false)} aria-label="Закрыть поиск"><X size={20}/></button>
         <span className="finder-icon"><UserRoundSearch size={26}/></span>
         <h2 id="finder-title">Найдите себя в списке</h2>
-        <p id="finder-description">Выберите своё имя — мы покажем вашу команду, личную программу и куда идти сейчас.</p>
+        <p id="finder-description">Выберите свой ник — мы покажем вашу команду, личную программу и куда идти сейчас.</p>
         <label className="finder-search">
-          <span className="sr-only">Введите имя или фамилию</span>
+          <span className="sr-only">Введите ник</span>
           <Search size={19}/>
-          <input type="search" autoComplete="off" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Введите имя или фамилию"/>
+          <input type="search" autoComplete="off" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Введите ник"/>
         </label>
         <p className="finder-count" role="status">{query ? `Найдено: ${matches.length}` : `Участников: ${matches.length}`}</p>
         <div className="finder-results" role="group" aria-label="Участники">
@@ -73,7 +73,7 @@ export default function ParticipantFinder({ open, onOpenChange, onSelect, select
               <span>{participant.name}</span><small>Команда «{participant.teamName}»</small>
             </button>
           ))}
-          {matches.length === 0 && <div className="finder-empty">Ничего не найдено. Проверьте написание имени.</div>}
+          {matches.length === 0 && <div className="finder-empty">Ничего не найдено. Проверьте написание ника.</div>}
         </div>
         <button className="finder-skip" type="button" onClick={selectedParticipantName ? onClear : onSkip}>
           {selectedParticipantName ? 'Убрать выбор участника' : 'Продолжить без выбора'}

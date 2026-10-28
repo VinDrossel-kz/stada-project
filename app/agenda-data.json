@@ -1,8 +1,4 @@
 {
-  "sources": [
-    "адженда_ЦК_сентябрь 2026 2.xlsx",
-    "Agenda_CM_Autumn 2026(Индивидуальные листы) (1).csv"
-  ],
   "general": [
     {
       "id": "general-1",
@@ -11,7 +7,7 @@
       "end": "00:00",
       "allDay": true,
       "title": "Прилет команды и расселение в отеле (check-in 15.00)",
-      "lead": "Антонина Куклина",
+      "lead": "Ветерок",
       "location": "",
       "block": false
     },
@@ -22,7 +18,7 @@
       "end": "09:30",
       "allDay": false,
       "title": "Короткий инструктаж по технике безопасности",
-      "lead": "Бахтиёрджон Хаммидов",
+      "lead": "Серпантин",
       "location": "",
       "block": false
     },
@@ -33,7 +29,7 @@
       "end": "10:30",
       "allDay": false,
       "title": "Выступление команды LT KZ",
-      "lead": "Георгий Соустин",
+      "lead": "Морошка",
       "location": "",
       "block": false
     },
@@ -44,7 +40,7 @@
       "end": "11:00",
       "allDay": false,
       "title": "Кофе-брейк",
-      "lead": "Антонина Куклина",
+      "lead": "Ветерок",
       "location": "",
       "block": false
     },
@@ -55,7 +51,7 @@
       "end": "12:30",
       "allDay": false,
       "title": "Выступление команды LT Eurasia",
-      "lead": "Георгий Соустин",
+      "lead": "Морошка",
       "location": "",
       "block": false
     },
@@ -66,7 +62,7 @@
       "end": "13:00",
       "allDay": false,
       "title": "Брифинг команд, сборы",
-      "lead": "Антонина Куклина",
+      "lead": "Ветерок",
       "location": "",
       "block": false
     },
@@ -77,7 +73,7 @@
       "end": "14:00",
       "allDay": false,
       "title": "Обед",
-      "lead": "Антонина Куклина",
+      "lead": "Ветерок",
       "location": "",
       "block": false
     },
@@ -88,7 +84,7 @@
       "end": "18:30",
       "allDay": false,
       "title": "Тренинг практических навыков «Достичь вершины можно только командой»",
-      "lead": "Георгий Соустин\nАнтонина Куклина",
+      "lead": "Морошка\nВетерок",
       "location": "",
       "block": false,
       "details": [
@@ -96,7 +92,7 @@
           "start": "14:00",
           "end": "14:30",
           "title": "Рассадка по автобусам и выезд из отеля",
-          "lead": "Антонина Куклина"
+          "lead": "Ветерок"
         },
         {
           "start": "14:30",
@@ -132,7 +128,7 @@
       "end": "20:00",
       "allDay": false,
       "title": "Ужин в отеле",
-      "lead": "Антонина Куклина",
+      "lead": "Ветерок",
       "location": "",
       "block": false
     },
@@ -143,7 +139,7 @@
       "end": "09:30",
       "allDay": false,
       "title": "Открытие и брифинг",
-      "lead": "Ксения Лю",
+      "lead": "Эспрессо",
       "location": "",
       "block": false
     },
@@ -165,7 +161,7 @@
       "end": "11:30",
       "allDay": false,
       "title": "Кофе-брейк",
-      "lead": "Антонина Куклина",
+      "lead": "Ветерок",
       "location": "",
       "block": false
     },
@@ -187,7 +183,7 @@
       "end": "14:00",
       "allDay": false,
       "title": "Обед",
-      "lead": "Антонина Куклина",
+      "lead": "Ветерок",
       "location": "",
       "block": false
     },
@@ -209,7 +205,7 @@
       "end": "16:00",
       "allDay": false,
       "title": "Кофе-брейк",
-      "lead": "Антонина Куклина",
+      "lead": "Ветерок",
       "location": "",
       "block": false
     },
@@ -220,7 +216,7 @@
       "end": "16:30",
       "allDay": false,
       "title": "Предварительные результаты, ОС",
-      "lead": "Гарипова Наталья",
+      "lead": "Ваниль",
       "location": "",
       "block": false
     },
@@ -242,7 +238,7 @@
       "end": "22:00",
       "allDay": false,
       "title": "Гала-ужин",
-      "lead": "Антонина Куклина",
+      "lead": "Ветерок",
       "location": "",
       "block": false
     },
@@ -253,7 +249,7 @@
       "end": "00:00",
       "allDay": true,
       "title": "Выезд из отеля (check-out до 12.00), перелеты",
-      "lead": "Антонина Куклина",
+      "lead": "Ветерок",
       "location": "",
       "block": false
     }

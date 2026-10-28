@@ -1,22 +1,29 @@
 # STADA Borovoe Summit
 
-Public leaderboard and agenda, deployable to Vercel with the Next.js preset.
+Leaderboard, team rosters, agenda and safety briefing for the LET'S MAX STADA 2026 conference. Built with Next.js and deployed to Vercel.
 
-## Vercel
+## Run locally
 
-Import this repository, keep the root directory at ./, and use the Next.js preset.
-Build settings are defined in vercel.json. No environment variables are required.
+```bash
+npm ci
+npm run dev        # http://localhost:3000
+npm run build && npm start
+```
 
-Run npm ci, npm run build, and npm start to test the production build locally.
+## How it works
 
-## Existing live data and organizer access
+- **Scores** are read from and written to the existing ChatGPT Sites backend (`lib/site-backend.ts`), proxied server-side through `/api/scores`. That site must stay online — it owns the score database.
+- **Organizer page** (`/admin`) is password-protected. The session lives in a secure, HTTP-only cookie; the password never reaches client JavaScript.
+- **Teams and participants** are defined in `app/teams.ts`; games in `app/games.ts`; the agenda in `app/agenda-data.json`.
 
-The Vercel site reads public scores through a server-side, uncached request to
-https://stada-borovoe-summit.miashecks.chatgpt.site/api/scores.
-The organizer page is served at `/admin` on the same Vercel site. It requires
-the organizer password and keeps the moderator session in a secure, HTTP-only
-cookie. Authenticated score updates are proxied server-side to the existing
-Sites database; the password is never included in client JavaScript.
+## Project layout
 
-The original ChatGPT site must remain available because it owns the score
-database. This is a frontend hosting migration, not a database migration.
+```
+app/                 pages, API routes and app components
+  admin/             organizer login and score editor
+  agenda/ teams/ briefing/
+  api/               scores proxy + organizer login/logout
+components/ui/       table component
+lib/                 organizer session, backend URL, utils
+public/              images and the briefing presentation
+```
