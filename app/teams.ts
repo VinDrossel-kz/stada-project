@@ -14,6 +14,7 @@ export type TeamRoster = {
   members: string[];
 };
 
+/** Starting roster: seeds the database and fills the first paint before the live roster loads. */
 export const teamRosters: TeamRoster[] = [
   { id: 1, name: 'Маттерхорн', members: ['Весельчак', 'Хохотушка', 'Штурман', 'Мисс Позитив', 'Апельсинка', 'Агат', 'Звёздочка', 'Пончик', 'Карабин', 'Гроза'] },
   { id: 2, name: 'Хан Тенгри', members: ['Добряк', 'Коралл', 'Капучино', 'Следопыт', 'Метелица', 'Северное Сияние', 'Топаз', 'Опал', 'Мистер Баллы', 'Альпеншток'] },
@@ -39,6 +40,8 @@ export const initialTeams: Team[] = teamRosters.map((team) => ({
   game_scores: [],
 }));
 
-export const participants = teamRosters.flatMap((team) =>
-  team.members.map((name) => ({ name, teamId: team.id, teamName: team.name })),
-);
+export type Participant = { name: string; teamId: number; teamName: string };
+
+export function toParticipants(rosters: TeamRoster[]): Participant[] {
+  return rosters.flatMap((team) => team.members.map((name) => ({ name, teamId: team.id, teamName: team.name })));
+}

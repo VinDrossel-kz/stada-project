@@ -2,12 +2,12 @@
 import { useState } from 'react';
 import { CalendarDays, MapPin, Users, UserRound } from 'lucide-react';
 import Header from '../header';
-import { useParticipant } from '../participant-context';
+import { useParticipant, useRoster } from '../participant-context';
 import { agendaTimezone, dayLabel, eventDays, getAgenda, getAgendaStatus, timeLabel } from '../agenda-model';
-import { teamRosters } from '../teams';
 import { useConferenceClock } from '../use-conference-clock';
 export default function Agenda() {
   const { participant, openFinder } = useParticipant();
+  const { roster } = useRoster();
   const [chosenDay, setChosenDay] = useState<string | null>(null);
   const [view, setView] = useState<'personal' | 'general'>('personal');
   const now = useConferenceClock();
@@ -17,9 +17,9 @@ export default function Agenda() {
   const events = getAgenda(personal ? participant?.teamId : null);
   const current = now === null ? undefined : getAgendaStatus(events, now).current;
   return <><Header active="agenda"/><main id="main-content" className="main agenda-main">
-    <p className="eyebrow">21–24 СЕНТЯБРЯ · БОРОВОЕ</p>
+    <p className="eyebrow">21–24 СЕНТЯБРЯ</p>
     <h1>Программа конференции</h1>
-    <p className="agenda-intro">Все встречи и ваш маршрут по станциям. Время Борового, Казахстан · UTC+5.</p>
+    <p className="agenda-intro">Все встречи и ваш маршрут по станциям. Время местное · UTC+5.</p>
     <section className="agenda-selection" aria-label="Участник и программа">
       <div><UserRound size={24}/><span><strong>{participant?.name ?? 'Ваша команда — ваш маршрут'}</strong><small>{participant ? `Команда ${participant.teamId} · ${participant.teamName}` : 'Выберите себя, чтобы увидеть свои раунды, залы и соперников.'}</small></span></div>
       <button className="find-me-button" type="button" onClick={openFinder}>{participant ? 'Сменить участника' : 'Найти себя'}</button>
@@ -33,7 +33,7 @@ export default function Agenda() {
         {event.round && <p className="agenda-round">РАУНД {event.round} / 7</p>}
         <h3>{event.title}</h3>
         {event.location ? <p className="agenda-location"><MapPin size={17}/>{event.location}</p> : <p className="agenda-location muted"><MapPin size={17}/>Место уточните у организаторов</p>}
-        {event.opponentId && <p className="agenda-opponent"><Users size={16}/>Соперник: команда {event.opponentId} · {teamRosters.find((team) => team.id === event.opponentId)?.name}</p>}
+        {event.opponentId && <p className="agenda-opponent"><Users size={16}/>Соперник: команда {event.opponentId} · {roster.find((team) => team.id === event.opponentId)?.name}</p>}
         {event.lead && <p className="agenda-lead">Лидирует: {event.lead.replaceAll('\n', ', ')}</p>}
         {event.note && <p className="agenda-note-inline">{event.note}</p>}
         {event.details && <ol className="agenda-details" aria-label="Подробная программа тренинга">{event.details.map((detail) => <li key={detail.start}><span className="agenda-detail-time">{detail.start}–{detail.end}</span><div>{detail.title}{detail.lead && <small>Лидирует: {detail.lead}</small>}</div></li>)}</ol>}

@@ -1,0 +1,37 @@
+# `docker compose up --build` → http://localhost:3000
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: stada
+      POSTGRES_USER: stada
+      POSTGRES_PASSWORD: stada
+    ports:
+      - "5433:5432"   # host 5433 for local `npm run dev`
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stada -d stada"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://stada:stada@db:5432/stada
+      # First owner account, created only when the database has none.
+      ADMIN_LOGIN: ${ADMIN_LOGIN:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-stada2026}
+      # Served over plain http on localhost, so session cookies can't be Secure-only.
+      INSECURE_COOKIES: "1"
+    ports:
+      - "${APP_PORT:-3000}:3000"   # APP_PORT=3100 docker compose up … if 3000 is taken
+
+volumes:
+  pgdata:

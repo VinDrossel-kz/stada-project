@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b5fa8"/>
+      <stop offset=".45" stop-color="#f08a4b"/>
+      <stop offset=".7" stop-color="#ffc56b"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d9824a"/>
+      <stop offset="1" stop-color="#9c4a25"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a4d57"/>
+      <stop offset="1" stop-color="#1f2128"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1380 470) scale(420)">
+      <stop offset="0" stop-color="#fff3c4"/>
+      <stop offset=".25" stop-color="#ffd27a" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="2000" height="900" fill="url(#sky)"/>
+  <circle cx="1380" cy="470" r="420" fill="url(#sun)"/>
+  <circle cx="1380" cy="470" r="95" fill="#fff0b8"/>
+  <!-- distant mesas -->
+  <path fill="#c96a4f" opacity=".75" d="M0 520h120l30-70h190l25 70h260l40-110h210l35 110h320l30-60h170l20 60h550V600H0Z"/>
+  <!-- near mesas and buttes -->
+  <path fill="#a8432c" d="M0 600V430l40-10h210l30 40v140h140V480l25-20h90l20 30v110h330l30-150 30-20h150l25 25 40 145h390V470l30-25h110l25 35v120h315V600Z"/>
+  <path fill="#7f2e1e" d="M250 420l30 40v140h-30Zm1175 25 40 145h-40Zm-505-5 25 25 40 145h-65Zm1080 50v100h-25V480Z" opacity=".7"/>
+  <path fill="#c25a39" d="M40 420h210l-12 22H52Zm825 20h150l-14 18H851Zm1095 5h110l-10 16h-100Z"/>
+  <!-- desert floor -->
+  <path fill="url(#ground)" d="M0 590h2000v310H0Z"/>
+  <path fill="#b9622f" opacity=".5" d="M0 640c260-20 520 10 780-5v40c-280 20-520-10-780 5Zm1240 30c260-20 500 0 760-10v45c-260 10-500-15-760 5Z"/>
+  <!-- road to the horizon -->
+  <path fill="url(#road)" d="M960 590h80l560 310H400Z"/>
+  <path fill="#f5f2e8" d="M965 590h6L420 900h-28Zm64 0h6l566 310h-28Z"/>
+  <path fill="#ffc93c" d="M997 600h6l2 20h-10Zm-3 40h12l4 38h-20Zm-6 70h24l7 60h-38Zm-10 100h44l12 90h-68Z"/>
+  <!-- cacti -->
+  <g fill="#3f6b35">
+    <path d="M300 700v-90a14 14 0 0 1 28 0v90Zm-36-40v-30a10 10 0 0 1 20 0v30h20v18h-40Zm64-10h18v-26a10 10 0 0 1 20 0v44h-38Z"/>
+    <path d="M1700 760v-120a17 17 0 0 1 34 0v120Zm-44-50v-36a12 12 0 0 1 24 0v36h24v20h-48Zm78-14h22v-30a12 12 0 0 1 24 0v52h-46Z"/>
+  </g>
+  <!-- chequered banner over the road -->
+  <g>
+    <path fill="#2a1a14" d="M820 470h8v125h-8Zm344 0h8v125h-8Z"/>
+    <path fill="#fff" d="M820 470h352v28H820Z"/>
+    <path fill="#16181d" d="M820 470h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14ZM834 484h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Zm28 0h14v14h-14Z"/>
+  </g>
+</svg>
